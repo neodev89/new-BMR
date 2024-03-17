@@ -1,0 +1,85 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+}
+
+.app {
+    position: relative;
+    display: flex;
+    height: 100dvh;
+    width: 100dvw;
+    border: 3px solid blueviolet;
+}
+
+.principalDiv {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2px;
+    height: 100%;
+    width: 100%;
+    border: 1px solid green;
+}
+
+.couple {
+    position: relative;
+    display: grid;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 95%;
+    width: 48%;
+    border: 2px solid grey;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 10px;
+}
+
+.divTotal, .divTitle, .divBody, .divFoot {
+    position: relative;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.divTotal {
+    grid-column: 3 / 7;
+    grid-row: 2 / 10;
+    border: 2px groove black;
+}
+
+.divTitle {
+    height: calc(calc(100% / 4) - 0.3rem);
+    width: 98%;
+    border: 1px solid red;
+}
+
+.divBody {
+    height: calc(calc(100% / 2) - 0.3rem);
+    width: 98%;
+    border: 1px solid blueviolet;
+}
+
+.divFoot {
+    height: calc(calc(100% / 4) - 0.3rem);
+    width: 98%;
+    border: 1px solid red;
+}
+
+.btn {
+    height: 30px;
+    width: 150px;
+    border-radius: 4px;
+}
+
+.women {
+    color: hotpink;
+}
