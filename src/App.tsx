@@ -1,89 +1,110 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useReducer } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import StyleBmr from './Appstyle.module.css';// stile css per i laptop
-import StyleBmrMobile from './Appstyle.mobile.module.css';// stile per i dispositivi mobili
 import { Box, TextField } from '@mui/material';
-import { inputsSelection } from './ObjLib';
 
-const objList: any = inputsSelection;
-
-const MyContext = React.createContext({})
+const MyContext = React.createContext({});
 
 const BmrApp = () => {
-  const [width, setWidth] = useState(0)
 
-  useEffect(() => {
-    function handleResize() {
-      setWidth(window.innerWidth)
-    }
-    if (window.innerWidth >= 0) {
-      setWidth(window.innerWidth)
-    }
-    // Questo codice verrà eseguito dopo il caricamento del DOM
-    // console.log('Il DOM è completamente caricato');
+  // useEffect(() => {
+  //   function handleResize() {
+  //     setWidth(window.innerWidth)
+  //   }
+  //   if (window.innerWidth >= 0) {
+  //     setWidth(window.innerWidth)
+  //   }
+  //   // Questo codice verrà eseguito dopo il caricamento del DOM
+  //   // console.log('Il DOM è completamente caricato');
 
-    window.addEventListener("resize", handleResize)
+  //   window.addEventListener("resize", handleResize)
 
-    return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  }, [setWidth]);
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize)
+  //   }
+  // }, [setWidth]);
+
   return (
     <BrowserRouter>
-      {
-        width > 768
-          ?
-          <div style={{ position: 'relative', height: '100vh', minWidth: 1000 }}>
-            <Routes>
-              <Route path='/' element={<PrincipalPage />} />
-            </Routes>
-          </div>
-          :
-          <div style={{ position: 'relative', height: '100vh', minWidth: 338 }}>
-            <Routes>
-              <Route path='/' element={<PrincipalPage mobile />} />
-            </Routes>
-          </div>
-
-      }
+      <Box>
+        <Routes>
+          <Route path='/' element={<PrincipalPage />} />
+        </Routes>
+      </Box>
     </BrowserRouter>
   )
 }
 
 interface MobileProps {
-  mobile?: boolean;
   handleGender?: () => void;
   textBtn?: string;
   el?: any;
 }
 
-interface TextFiledProps {
-  mobile?: boolean;
+type TextFiledProps = {
   className?: any;
-  key: number | string;
-  variant: any;
-  type: string;
-  label: string;
+  key?: number | string;
+  variant?: any;
+  type?: string;
+  value?: string | any;
+  label?: string;
   InputProps?: any;
   children?: string;
   style?: object;
+  onChange?: any;
 }
 
-const PrincipalPage = (props: MobileProps) => {
-  const [chooseGender, setChooseGender]: any = useState(false);
+const PrincipalPage = (props: TextFiledProps) => {
+  const [chooseGender, setChooseGender]: any = useState(false); // false sta per uomo, true per donna
   function handleGender(): any {
     setChooseGender(!chooseGender);
   }
 
-  const {
-    app,
-    principalDiv,
-    couple,
-    divTotal,
-    divTitle,
-    divBody,
-    divFoot,
-  } = props.mobile ? StyleBmrMobile : StyleBmr;
+  const [field1, setField1] = useState(0);
+  const [field2, setField2] = useState(0);
+  const [field3, setField3] = useState(0);
+
+  function HandleBmr(a: number, b: number, c: number): any {
+    //in Man: BMR=66.4730 + 13.7516 x weight in kg + 5.0033 x height in cm – 6.7550 x age in years.
+    //In women, BMR=655.0955 + 9.5634 x weight in kg + 1.8496 x height in cm – 4.6756 x age in years.
+    if (chooseGender) {
+      if (a === 0 && b === 0 && c === 0) {
+        alert('Attenzione! non hai compilato alcuni/tutti i campi')
+      } else {
+        let result1 = Math.floor(655.0955 + (9.5634 * b) + (1.8496 * a) - (4.6756 * c));
+        handleIMC(a, b);
+        console.log(result1, a, b, c);
+        resetFields();
+      }
+
+    } else {
+      if (a === 0 && b === 0 && c === 0) {
+        alert('Attenzione! non hai compilato alcuni/tutti i campi')
+      } else {
+        let result2 = Math.floor(66.4730 + (13.7516 * b) + (5.0033 * a) - (6.7550 * c));
+        handleIMC(a, b);
+        console.log(result2, a, b, c);
+        resetFields();
+      }
+    }
+  }
+
+  const handleIMC = (a: number, b: number) => {
+    let height = a / 100;
+    let imc = ((b) / (height * height)).toFixed(2);
+    console.log(imc)
+  }
+
+  const resetFields = () => {
+    setField1(0)
+    setField2(0)
+    setField3(0)
+  }
+
+  const inputsSelection = [
+    { id: 1, label: 'Height', variant: 'outlined', type: 'number', value: field1, onChange: (e: any) => setField1(Number(e.target.value)) },
+    { id: 2, label: 'Weight', variant: 'outlined', type: 'number', value: field2, onChange: (e: any) => setField2(Number(e.target.value)) },
+    { id: 3, label: 'Age', variant: 'outlined', type: 'number', value: field3, onChange: (e: any) => setField3(Number(e.target.value)) }
+  ];
 
   return (
     <>
@@ -91,41 +112,42 @@ const PrincipalPage = (props: MobileProps) => {
         chooseGender,
         handleGender
       }}>
-        <div className={app}>
-          <div className={principalDiv}>
-            <div className={couple}>
+        <div>
+          <div>
+            <div>
               {/**Calcola il BMR per uomo o donna */}
-              <div className={divTotal}>
-                <div className={divTitle}>
+              <div>
+                <div>
                   <h1 style={{
-                    fontSize: props.mobile ? '16px' : '22px',
+                    color: chooseGender ? 'pink' : 'aqua'
                   }}>
-                    Calcola BMR
+                    Calcola BMR {chooseGender ? 'Donna' : 'Uomo'}
                   </h1>
                 </div>
-                <div className={divBody}>
+                <div>
                   {
-                    objList.map((el: any) => {
+                    inputsSelection.map((el: any) => {
                       return (
-                        <AppBox 
+                        <AppBox
                           key={el.id}
                           variant={el.variant}
                           label={el.label}
                           type={el.type}
+                          value={el.value}
+                          onChange={el.onChange}
                         />
                       )
                     })
                   }
                 </div>
-                <div className={divFoot}>
-                  {!chooseGender && <CalcMan textBtn='Donna'/>}
-                  {chooseGender && <CalcWoman textBtn='Uomo'/>}
+                <div>
+                  {!chooseGender && <CalcMan textBtn='Donna' />}
+                  {chooseGender && <CalcWoman textBtn='Uomo' />}
+                  <button type="button" onClick={() => HandleBmr(field1, field2, field3)}>BMR</button>
                 </div>
               </div>
             </div>
-            <div className={couple}>
-              {/**Qui calcola la massa grassa */}
-            </div>
+            {/**Qui calcola la massa grassa */}
           </div>
         </div>
       </MyContext.Provider>
@@ -135,11 +157,10 @@ const PrincipalPage = (props: MobileProps) => {
 
 const CalcMan = (props: MobileProps) => {
   const { chooseGender, handleGender }: any = useContext(MyContext); // Usa handleGender dal tuo contesto
-  const { btn }: any = props.mobile ? StyleBmrMobile : StyleBmr;
 
   return (
     <>
-      <button className={btn} type="button" onClick={() => handleGender(!chooseGender)}>{props.textBtn}</button>
+      <button type="button" onClick={() => handleGender(!chooseGender)}>{props.textBtn}</button>
       {/* // Usa handleGender quando il pulsante viene cliccato */}
     </>
 
@@ -148,11 +169,10 @@ const CalcMan = (props: MobileProps) => {
 
 const CalcWoman = (props: MobileProps) => {
   const { chooseGender, handleGender }: any = useContext(MyContext);
-  const { btn }: any = props.mobile ? StyleBmrMobile : StyleBmr
 
   return (
     <>
-      <button className={btn} type="button" onClick={() => handleGender(!chooseGender)}>{props.textBtn}</button>
+      <button type="button" onClick={() => handleGender(!chooseGender)}>{props.textBtn}</button>
       {/* // Usa handleGender quando il pulsante viene cliccato */}
     </>
   )
@@ -160,60 +180,58 @@ const CalcWoman = (props: MobileProps) => {
 
 
 const AppBox = (props: TextFiledProps) => {
-  const [isFocused, setIsFocused] : any = useState(false);
+  const [isFocused, setIsFocused]: any = useState(false);
 
   return (
-      <Box
+    <Box
       component='form'
+      sx={{
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'center',
+        height: 35,
+        width: '100%',
+      }}
+    >
+      <TextField
+        label={props.label}
+        variant={props.variant}
+        onFocus={() => setIsFocused(!isFocused)}
+        onBlur={() => setIsFocused(false)}
+        onChange={props.onChange}
+        value={props.value}
         sx={{
-          position: 'relative',
-          display: 'flex',
-          justifyContent: 'center',
           height: 35,
-          width: '100%',
-          maxWidth: props.mobile ? '150px' : '200px',
-        }}  
-      >
-        <TextField
-          label={props.label}
-          variant={props.variant}
-          onFocus={() => setIsFocused(!isFocused)}
-          onBlur={() => setIsFocused(false)}
-          sx={{
-            height: '27px',
-            width: '100%',
-            cursor: 'pointer',
-            '& .MuiOutlinedInput-root': {
+          width: '300px',
+          cursor: 'pointer',
+          '& .MuiOutlinedInput-root': {
+            height: '100%',
+            maxHeight: 35,
+            '& > fieldset': {
               height: '100%',
-              maxHeight: 35,
             },
-            '& .MuiOutlinedInput-root:hover': {
-              '& > fieldset': {
-                borderColor: 'orange',
-              },
-            }
+          },
+          '& .MuiOutlinedInput-root:hover': {
+            '& > fieldset': {
+              borderColor: 'orange',
+            },
+          }
 
-          }}
-          InputLabelProps={{
-            color: 'secondary',
-            sx: {
-              fontSize: 14,
-              top: isFocused ? 0 : '-11px'
-            },
-          }}
-        >
-        </TextField>
-      </Box>
+        }}
+        InputLabelProps={{
+          color: 'secondary',
+          sx: {
+            fontSize: 14,
+            top: isFocused ? '-11px' : '0'
+          },
+        }}
+      >
+      </TextField>
+    </Box>
   )
 }
 
-const ErrorPage = () => {
 
-  return (
-    <div>
-      <h1>Pagina di errore</h1>
-    </div>
-  )
-}
+
 
 export default BmrApp;
