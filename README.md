@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # new-BMR
 il calcolatore del metabolismo basale completamente rinnovato.
 =======
@@ -49,3 +50,6 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 >>>>>>> 34bba7e (Initialize project using Create React App)
+=======
+
+>>>>>>> 392badb8cf11db8d42010f98b6693b56e0f85298
