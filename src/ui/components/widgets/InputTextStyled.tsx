@@ -4,9 +4,11 @@ import { styled } from '@mui/material/'
 const InputTextStyled = styled(FormControl)(({ inputMode }) => ({
   '.MuiFormHelperText-root': { margin: 0, marginTop: '2px' },
   '.MuiOutlinedInput-root': {
+    margin: '5px 0',
     backgroundColor: 'white',
     borderRadius: '14px / 13px',
     height: inputMode === 'text' ? '' : '42px',
+    width: '100%',
     fontSize: 14,
     '& fieldset': {
       border: 'none',

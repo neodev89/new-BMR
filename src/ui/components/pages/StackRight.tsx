@@ -1,11 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
+import { MyContext } from '../../../MyContext';
 import { Stack } from '@mui/material';
 
-import { propertyProps } from '../../tipes/stackInterf';
 
-const StackRight: FC<propertyProps> = ({ sx }: propertyProps) => {
+const StackRight: FC = () => {
+    const { sx }: any = useContext(MyContext);
     return (
-        <Stack spacing={1} sx={sx}>
+        <Stack spacing={1} sx={sx.table}>
 
         </Stack>
     )

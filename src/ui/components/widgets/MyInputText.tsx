@@ -1,6 +1,6 @@
 import InputTextStyled from "./InputTextStyled";
 import { OutlinedInput } from "@mui/material";
-import { InputTextProps } from "../widgets/InputProps";
+import { InputTextProps } from "./InputProps";
 
 export const MyInputText = (props: InputTextProps) => {
     const {
