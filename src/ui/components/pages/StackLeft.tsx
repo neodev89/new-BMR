@@ -1,11 +1,11 @@
 import { FC, useContext } from 'react';
-import { Button, Stack, Typography } from '@mui/material';
-import { MyBtn } from '../widgets/MyBtn';
+import { Stack, Typography } from '@mui/material';
+import { MyBtn, MyBtnGenerico } from '../widgets/MyBtn';
 import { MyBox } from '../widgets/MyBox';
 import { MySubmit } from '../widgets/MySubmit';
 
 import { useStyleBox } from '../../styles/useSxStyle';
-import { MyInputText } from '../widgets/MyInputText';
+import { MyStyledInput } from '../widgets/MyInputText';
 import { MyContext } from '../../../MyContext';
 
 import { useHandleBmr, useResetCount } from '../functions/handleBmr';
@@ -14,9 +14,7 @@ const StackLeft: FC = () => {
     const {
         gender,
         toggleGender,
-        setValue,
         count,
-        setCount,
         sx,
         field1,
         setField1,
@@ -27,12 +25,19 @@ const StackLeft: FC = () => {
     }: any = useContext(MyContext);
     const sx1 = useStyleBox();
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value);
+    const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setField1(event.target.value);
+    }
+    const handleChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setField2(event.target.value);
+    }
+    const handleChange3 = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setField3(event.target.value);
     }
 
+
     const resetCount = useResetCount();
-    const handleBmr = useHandleBmr({ field1, field2, field3, setCount });
+    const handleBmr = useHandleBmr();
 
     return (
         <Stack spacing={1} sx={sx.table}>
@@ -44,34 +49,35 @@ const StackLeft: FC = () => {
             </Stack>
             <Stack spacing={1} sx={sx1.corpo}>
                 <MyBox>
-                    <MyInputText
+                    <MyStyledInput
                         inputMode='numeric'
-                        onChange={handleChange}
+                        onChange={handleChange1}
                         placeholder='weight in kg'
+                        value={field1}
+                        
                     />
-                    <MyInputText
+                    <MyStyledInput
                         inputMode='numeric'
-                        onChange={handleChange}
+                        onChange={handleChange2}
                         placeholder='height in cm'
+                        value={field2}
                     />
-                    <MyInputText
+                    <MyStyledInput
                         inputMode='numeric'
-                        onChange={handleChange}
+                        onChange={handleChange3}
                         placeholder='age in year'
+                        value={field3}
                     />
-                    <Typography>{count}</Typography>
-                    <MySubmit
+                    <MySubmit sx={sx.btn} gender={gender}
                         onClick={handleBmr}
-                        params={{ field1: field1, field2: field2, field3: field3, setCount: setCount }}
                     >
                         Calcola
                     </MySubmit>
-                    <Button type='button' variant='outlined' color='warning'
+                    <MyBtnGenerico sx={sx.cancella}
                         onClick={resetCount}
-                        /**non funziona */
                     >
                         Cancella
-                    </Button>
+                    </MyBtnGenerico>
 
                 </MyBox>
             </Stack>

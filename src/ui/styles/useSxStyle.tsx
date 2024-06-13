@@ -1,7 +1,10 @@
-import { blue } from "@mui/material/colors";
+import { blue, blueGrey, grey, pink, red } from "@mui/material/colors";
 import sx from "../tipes/sxTipe"; // Assuming this provides styling functionality
+import { MyContext } from "../../MyContext";
+import { useContext } from "react";
 
 export function useStyle() {
+
     return {
         table: sx({
             position: 'relative',
@@ -16,13 +19,23 @@ export function useStyle() {
         }),
         btn: sx({
             height: '50px',
-            width: '150px',
+            width: '100px',
+            margin: '2px 0',
+            color: 'white',
         }),
+        cancella: sx({
+            backgroundColor: 'white',
+            color: red['A700'],
+            height: '50px',
+            width: '100px',
+            margin: '2px 0',
+        }),
+       
     }
 }
 
 export function useStyleBox() {
-
+    const { gender }: any = useContext(MyContext);
     return {
         boxBmr: sx({
             justifyContent: 'center',
@@ -43,6 +56,7 @@ export function useStyleBox() {
         typography: sx({
             fontFamily: 'MontSerrat',
             fontWeight: '600',
+            color: gender === 'M' ? blue[300] : pink[200],
         })
     }; // Aggiungi gender come dipendenza di useMemo
 }

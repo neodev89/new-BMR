@@ -1,22 +1,32 @@
 import { Theme } from '@emotion/react';
-import { Button, SxProps } from '@mui/material';
+import { Button, darken, SxProps } from '@mui/material';
+import { blue, pink } from '@mui/material/colors';
 import React, { FC } from 'react';
-import { BmrProps } from '../functions/handleBmr';
-
-type MyFunctionType<T> = (args: BmrProps) => T;
 
 interface SubmitProps {
   sx?: SxProps<Theme>;
-  onClick: MyFunctionType<void>; // Generic function type for onClick
+  onClick: () => void;
   children: string;
-  params: BmrProps;
+  gender: 'M' | 'F';
 }
 
-export const MySubmit: FC<SubmitProps> = ({ sx, onClick, children, params }: SubmitProps) => {
+export const MySubmit: FC<SubmitProps> = ({ sx, onClick, children, gender }: SubmitProps) => {
+  const color = gender === 'M' ? blue[800] : pink[300];
+
   return (
-    <Button sx={sx} size="small" variant="outlined" onClick={() => onClick(params)}>
+    <Button 
+      sx={{ 
+        ...sx, 
+        backgroundColor: color, // Il colore di sfondo cambia in base al genere
+        '&:hover': {
+          backgroundColor: darken(color, 0.2), // Il colore di sfondo al passaggio del mouse diventa più scuro
+        },
+      }} 
+      size="small" 
+      variant="contained" 
+      onClick={onClick}
+    >
       {children}
     </Button>
   );
 };
-

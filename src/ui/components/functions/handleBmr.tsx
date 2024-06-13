@@ -8,25 +8,29 @@
 import { useContext } from "react";
 import { MyContext } from "../../../MyContext";
 
-type FunctionCount<T> = (args: T) => T;
-
-export interface BmrProps {
-    field1: number;
-    field2: number;
-    field3: number;
-    setCount: FunctionCount<number>;
+const InputControl = () => {
+    const {field1, field2, field3} = useContext(MyContext);
+    const control = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (field1==='' && field2==='' && field3==='') {
+            e.preventDefault();
+        } else {
+            return null;
+        }
+    }
+    return control;
 }
 
-export const useHandleBmr = ({ field1, field2, field3, setCount }: BmrProps) => {
-    const { gender } = useContext(MyContext);
+export const useHandleBmr = () => {
+    const { gender, field1, field2, field3, setCount } = useContext(MyContext);
+    InputControl();
     const bmrCalc = () => {
         if (gender === 'M') {
-            let formulaMan: number = 66.4730 + (13.7516 * field1) +
-                (5.0033 * field2) - (6.7550 * field3);
+            let formulaMan = (66.4730 + (13.7516 * field1) +
+                (5.0033 * field2) - (6.7550 * field3)).toFixed(2);
             setCount(formulaMan);
         } else {
-            let formulaWoman: number = 655.0955 + (9.5634 * field1) + 
-            (1.8496 * field2) - (4.6756 * field3);
+            let formulaWoman = (655.0955 + (9.5634 * field1) + 
+            (1.8496 * field2) - (4.6756 * field3)).toFixed(2);
             setCount(formulaWoman)
         }
     }
@@ -36,13 +40,11 @@ export const useHandleBmr = ({ field1, field2, field3, setCount }: BmrProps) => 
 
 export const useResetCount = () => {
     const { setField1, setField2, setField3, setCount } = useContext(MyContext);
-
     const resetCount = () => {
         setField1('');
         setField2('');
         setField3('');
         setCount(0);
     };
-
     return resetCount;
 };

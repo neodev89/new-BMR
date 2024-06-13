@@ -9,7 +9,7 @@ import { MyContext } from './MyContext';
 
 import BMR_img from './ui/images/BMR_img.svg';
 
-export type Gender = 'M' | 'F' 
+export type Gender = 'M' | 'F'
 
 // const genders = [
 //     { value: 'M', label: 'M' },
@@ -17,57 +17,54 @@ export type Gender = 'M' | 'F'
 //   ]
 
 function App() {
-    const [gender, setGender] = useState<Gender>('F');
-    const [value, setValue] = useState('');
-    const [count, setCount] = useState(0);
-    const [field1, setField1] = useState('');
-    const [field2, setField3] = useState('');
-    const [field3, setField2] = useState('');
-    const sx = useStyle();
+  const [gender, setGender] = useState<Gender>('F');
+  const [count, setCount] = useState(0);
+  const [field1, setField1] = useState('');
+  const [field2, setField2] = useState('');
+  const [field3, setField3] = useState('');
+  const sx = useStyle();
 
-    function toggleGender() {
-        setGender((prevState) => {
-          if (prevState === 'M') {
-            return 'F';
-          } else {
-            return 'M';
-          }
-        });
-        console.log(gender)
-      }
+  function toggleGender() {
+    if (gender === 'F') {
+      alert('Hai scelto il sesso maschile');
+      setGender('M')
+    } else {
+      alert('Hai scelto il sesso femminile')
+      setGender('F')
+    }
+  }
+
 
     return (
-        // Utilizzo del Context in un Provider
-        <MyContext.Provider value={{
-            gender,
-            toggleGender,
-            value,
-            setValue,
-            count,
-            setCount,
-            sx,
-            field1,
-            setField1,
-            field2, 
-            setField2,
-            field3, 
-            setField3
-        }}>
-            <Stack spacing={1} className={myStyle.app}
-            style={{ 
-                backgroundImage: `url(${BMR_img})`,
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: '50% 25%',
-                filter: 'drop-shadow(5px 5px 5px black)',
-                }}>
-                    <Box className={myStyle.central}>
-                        <StackLeft />
-                        <StackRight />
-                    </Box>
+      // Utilizzo del Context in un Provider
+      <MyContext.Provider value={{
+        gender,
+        toggleGender,
+        count,
+        setCount,
+        sx,
+        field1,
+        setField1,
+        field2,
+        setField2,
+        field3,
+        setField3
+      }}>
+        <Stack spacing={1} className={myStyle.app}
+          style={{
+            backgroundImage: `url(${BMR_img})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: '50% 25%',
+            filter: 'drop-shadow(5px 5px 5px black)',
+          }}>
+          <Box className={myStyle.central}>
+            <StackLeft />
+            <StackRight />
+          </Box>
 
-            </Stack>
-        </MyContext.Provider>
+        </Stack>
+      </MyContext.Provider>
     );
-}
+  }
 
-export default App;
+  export default App;
