@@ -1,11 +1,11 @@
 import { FC, useContext } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { MyBtn, MyBtnGenerico } from '../widgets/MyBtn';
 import { MyBox } from '../widgets/MyBox';
 import { MySubmit } from '../widgets/MySubmit';
 
-import { useStyleBox } from '../../styles/useSxStyle';
-import { MyStyledInput } from '../widgets/MyInputText';
+import { useStyle, useStyleBox } from '../../styles/useSxStyle';
+import { MyStyledInput } from '../widgets/MyStyledInput';
 import { MyContext } from '../../../MyContext';
 
 import { useHandleBmr, useResetCount } from '../functions/handleBmr';
@@ -15,7 +15,6 @@ const StackLeft: FC = () => {
         gender,
         toggleGender,
         count,
-        sx,
         field1,
         setField1,
         field2,
@@ -23,6 +22,7 @@ const StackLeft: FC = () => {
         field3,
         setField3
     }: any = useContext(MyContext);
+    const sx = useStyle();
     const sx1 = useStyleBox();
 
     const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,36 +49,38 @@ const StackLeft: FC = () => {
             </Stack>
             <Stack spacing={1} sx={sx1.corpo}>
                 <MyBox>
-                    <MyStyledInput
-                        inputMode='numeric'
-                        onChange={handleChange1}
-                        placeholder='weight in kg'
-                        value={field1}
-                        
-                    />
-                    <MyStyledInput
-                        inputMode='numeric'
-                        onChange={handleChange2}
-                        placeholder='height in cm'
-                        value={field2}
-                    />
-                    <MyStyledInput
-                        inputMode='numeric'
-                        onChange={handleChange3}
-                        placeholder='age in year'
-                        value={field3}
-                    />
-                    <MySubmit sx={sx.btn} gender={gender}
-                        onClick={handleBmr}
-                    >
-                        Calcola
-                    </MySubmit>
-                    <MyBtnGenerico sx={sx.cancella}
-                        onClick={resetCount}
-                    >
-                        Cancella
-                    </MyBtnGenerico>
-
+                    <Stack spacing={1} sx={sx1.field}>
+                        <MyStyledInput
+                            inputMode='numeric'
+                            onChange={handleChange1}
+                            placeholder='weight in kg'
+                            value={field1}
+                        />
+                        <MyStyledInput
+                            inputMode='numeric'
+                            onChange={handleChange2}
+                            placeholder='height in cm'
+                            value={field2}
+                        />
+                        <MyStyledInput
+                            inputMode='numeric'
+                            onChange={handleChange3}
+                            placeholder='age in year'
+                            value={field3}
+                        />
+                    </Stack>
+                    <Box sx={sx1.fieldBtn}>
+                        <MySubmit gender={gender}
+                            onClick={handleBmr}
+                        >
+                            Calcola
+                        </MySubmit>
+                        <MyBtnGenerico sx={sx.cancella}
+                            onClick={resetCount}
+                        >
+                            Cancella
+                        </MyBtnGenerico>
+                    </Box>
                 </MyBox>
             </Stack>
             <Stack spacing={1} sx={sx1.boxBmr}>

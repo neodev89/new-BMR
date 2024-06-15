@@ -1,26 +1,19 @@
-import { TextField, TextFieldProps } from "@mui/material";
-import { InputTextProps } from "./InputProps";
-import styled from "@emotion/styled";
-import { yellow } from "@mui/material/colors";
+import { TextField } from "@mui/material";
+import { FC } from "react";
 
-export const MyStyledInput = styled(TextField)<InputTextProps & TextFieldProps>(({
-    // Aggiungi qui eventuali stili personalizzati
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    border: '1px solid transparent',
-    borderRadius: '8px',
-    backgroundColor: yellow[200],
-    height: '40px',
-    width: '100%',
-    margin: '5px 0',
-  '&:hover': {
-    backgroundColor: yellow[400],
-  },
-  '& .MuiOutlinedInput-root': {
-    width: '100%',
-    '& fieldset': {
-      border: '1px solid transparent',
-    }
-  }
-  }));
+type InputMode = "search" | "text" | "email" | "tel" | "url" | "none" | "numeric" | "decimal" | undefined;
+
+interface MyInputProps {
+  inputMode: InputMode;
+  isDisabled?: boolean;
+}
+
+export const MyInputText: FC<MyInputProps> = (props: MyInputProps) => {
+
+  return (
+    <TextField
+        isDisabled={props.isDisabled}
+      {...props}
+    />
+  )
+}

@@ -16,21 +16,31 @@ export type Gender = 'M' | 'F'
 //     { value: 'F', label: 'F' },
 //   ]
 
+
+
 function App() {
   const [gender, setGender] = useState<Gender>('F');
-  const [count, setCount] = useState(0);
-  const [field1, setField1] = useState('');
-  const [field2, setField2] = useState('');
-  const [field3, setField3] = useState('');
+  const [count, setCount] = useState<string>('');
+  const [countImc, setCountImc] = useState<string>('');
+  const [field1, setField1] = useState<string>('');
+  const [field2, setField2] = useState<string>('');
+  const [field3, setField3] = useState<string>('');
+  const [field4, setField4] = useState<string>('');
+  const [field5, setField5] = useState<string>('');
+  const [field6, setField6] = useState<string>('');
+  const [field7, setField7] = useState<string>('');
+
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  
   const sx = useStyle();
 
   function toggleGender() {
     if (gender === 'F') {
-      alert('Hai scelto il sesso maschile');
-      setGender('M')
+      setGender('M');
+      setIsDisabled(true);
     } else {
-      alert('Hai scelto il sesso femminile')
       setGender('F')
+      setIsDisabled(false);
     }
   }
 
@@ -48,7 +58,19 @@ function App() {
         field2,
         setField2,
         field3,
-        setField3
+        setField3,
+        field4,
+        setField4,
+        field5,
+        setField5,
+        field6,
+        setField6,
+        field7,
+        setField7,
+        isDisabled,
+        setIsDisabled,
+        countImc,
+        setCountImc,
       }}>
         <Stack spacing={1} className={myStyle.app}
           style={{

@@ -39,7 +39,7 @@ export const MyBtnGenerico : FC<BtnProps> = ({ sx, children, onClick }) => {
         <Button
             sx={{
                 ...sx,
-                height: '50px',
+                height: '30px',
                 width: '100px',
                 margin: '2px 0',
                 backgroundColor: "rgb(250, 250, 250)",
