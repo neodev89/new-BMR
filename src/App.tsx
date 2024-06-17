@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import myStyle from './Appstyle.module.css';
 import { Stack, Box } from '@mui/material';
 
@@ -31,7 +31,8 @@ function App() {
   const [field7, setField7] = useState<string>('');
 
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
-  
+  const [disabilita, setDisabilita] = useState<boolean>(false);
+
   const sx = useStyle();
 
   function toggleGender() {
@@ -44,49 +45,51 @@ function App() {
     }
   }
 
+  
+  return (
+    // Utilizzo del Context in un Provider
+    <MyContext.Provider value={{
+      gender,
+      toggleGender,
+      count,
+      setCount,
+      sx,
+      field1,
+      setField1,
+      field2,
+      setField2,
+      field3,
+      setField3,
+      field4,
+      setField4,
+      field5,
+      setField5,
+      field6,
+      setField6,
+      field7,
+      setField7,
+      isDisabled,
+      setIsDisabled,
+      disabilita,
+      setDisabilita,
+      countImc,
+      setCountImc,
+    }}>
+      <Stack spacing={1} className={myStyle.app}
+        style={{
+          backgroundImage: `url(${BMR_img})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: '50% 25%',
+          filter: 'drop-shadow(5px 5px 5px black)',
+        }}>
+        <Box className={myStyle.central}>
+          <StackLeft />
+          <StackRight />
+        </Box>
 
-    return (
-      // Utilizzo del Context in un Provider
-      <MyContext.Provider value={{
-        gender,
-        toggleGender,
-        count,
-        setCount,
-        sx,
-        field1,
-        setField1,
-        field2,
-        setField2,
-        field3,
-        setField3,
-        field4,
-        setField4,
-        field5,
-        setField5,
-        field6,
-        setField6,
-        field7,
-        setField7,
-        isDisabled,
-        setIsDisabled,
-        countImc,
-        setCountImc,
-      }}>
-        <Stack spacing={1} className={myStyle.app}
-          style={{
-            backgroundImage: `url(${BMR_img})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: '50% 25%',
-            filter: 'drop-shadow(5px 5px 5px black)',
-          }}>
-          <Box className={myStyle.central}>
-            <StackLeft />
-            <StackRight />
-          </Box>
+      </Stack>
+    </MyContext.Provider>
+  );
+}
 
-        </Stack>
-      </MyContext.Provider>
-    );
-  }
-
-  export default App;
+export default App;

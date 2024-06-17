@@ -17,6 +17,7 @@ export const MyStyledInput = styled(MyInputText)<InputTextProps & TextFieldProps
     margin: '5px 0',
   '&:hover': {
     backgroundColor: yellow[400],
+    border: '1px solid transparent'
   },
   '& .MuiOutlinedInput-root': {
     width: '100%',

@@ -2,7 +2,6 @@ import { FormControl } from '@mui/material/'
 import { styled } from '@mui/material/'
 
 const InputTextStyled = styled(FormControl)(({ inputMode }) => ({
-  '.MuiFormHelperText-root': { margin: 0, marginTop: '2px' },
   '.MuiOutlinedInput-root': {
     margin: '5px 0',
     backgroundColor: 'white',
@@ -11,20 +10,15 @@ const InputTextStyled = styled(FormControl)(({ inputMode }) => ({
     width: '100%',
     fontSize: 14,
     '& fieldset': {
-      border: 'none',
+      border: '1px solid transparent',
       backgroundColor: 'rgba(236, 246, 253, 1)',
     },
     '& input': {
       zIndex: 1,
     },
-    '& .MuiIconButton-root': {
-      zIndex: 1,
-    },
-    '&:hover fieldset': {
-      border: 'none',
-    },
+
     '&.Mui-focused fieldset': {
-      border: 'none',
+      border: '1px solid transparent',
     },
   },
   'input::-webkit-outer-spin-button, input::-webkit-inner-spin-button': {

@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useEffect } from 'react';
 import { MyContext } from '../../../MyContext';
 import { Box, Stack, Typography } from '@mui/material';
 
@@ -13,7 +13,8 @@ import { MyBtnGenerico } from '../widgets/MyBtn';
 
 const StackRight: FC = () => {
     const { gender, field4, setField4, field5, setField5, field6,
-        setField6, field7, setField7, countImc, setCountImc, isDisabled
+        setField6, field7, setField7, countImc, setCountImc, isDisabled,
+        disabilita, setDisabilita
     }: any = useContext(MyContext);
 
     const sx = useStyle();
@@ -34,6 +35,19 @@ const StackRight: FC = () => {
     const handleChange7 = (event: React.ChangeEvent<HTMLInputElement>) => {
         setField7(event.target.value);
     }
+
+    useEffect(() => {
+        function checkFields() {
+          const fields = [field4, field5, field6, field7];
+          if (fields.some(field => field === '')) {
+            setDisabilita(true);
+          } else {
+            setDisabilita(false);
+          }
+        }
+    
+        checkFields();
+      }, [field4, field5, field6, field7, setDisabilita]);
 
     return (
         <Stack spacing={1} sx={sx.table}>
@@ -75,7 +89,9 @@ const StackRight: FC = () => {
                     <Box sx={sx1.fieldBtn}>
 
                         <MySubmit gender={gender}
-                            onClick={handleCalc}>
+                            onClick={handleCalc}
+                            disabled={disabilita}
+                        >
                             Calcola
                         </MySubmit>
                         <MyBtnGenerico sx={sx.cancella}

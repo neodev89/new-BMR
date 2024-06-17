@@ -6,9 +6,10 @@ interface SubmitProps {
   onClick: () => void;
   children: string;
   gender: 'M' | 'F';
+  disabled?: boolean;
 }
 
-export const MySubmit: FC<SubmitProps> = ({ onClick, children, gender }: SubmitProps) => {
+export const MySubmit: FC<SubmitProps> = ({ onClick, children, disabled, gender }: SubmitProps) => {
   const color = gender === 'M' ? blue[800] : pink[300];
 
   return (
@@ -25,6 +26,7 @@ export const MySubmit: FC<SubmitProps> = ({ onClick, children, gender }: SubmitP
       }}
       size="small"
       variant="contained"
+      disabled={disabled}
       onClick={onClick}
     >
       {children}

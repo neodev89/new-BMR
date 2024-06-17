@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { FC, useContext, useEffect } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { MyBtn, MyBtnGenerico } from '../widgets/MyBtn';
 import { MyBox } from '../widgets/MyBox';
@@ -20,7 +20,9 @@ const StackLeft: FC = () => {
         field2,
         setField2,
         field3,
-        setField3
+        setField3,
+        isDisabled,
+        setIsDisabled
     }: any = useContext(MyContext);
     const sx = useStyle();
     const sx1 = useStyleBox();
@@ -38,6 +40,19 @@ const StackLeft: FC = () => {
 
     const resetCount = useResetCount();
     const handleBmr = useHandleBmr();
+
+    useEffect(() => {
+        function checkFields() {
+          const fields = [field1, field2, field3];
+          if (fields.some(field => field === '')) {
+            setIsDisabled(true);
+          } else {
+            setIsDisabled(false);
+          }
+        }
+    
+        checkFields();
+      }, [field1, field2, field3, setIsDisabled]);
 
     return (
         <Stack spacing={1} sx={sx.table}>
@@ -72,6 +87,7 @@ const StackLeft: FC = () => {
                     <Box sx={sx1.fieldBtn}>
                         <MySubmit gender={gender}
                             onClick={handleBmr}
+                            disabled={isDisabled}
                         >
                             Calcola
                         </MySubmit>

@@ -8,21 +8,8 @@
 import { useContext } from "react";
 import { MyContext } from "../../../MyContext";
 
-const InputControl = () => {
-    const { field1, field2, field3 } = useContext(MyContext);
-    const control = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (field1 === '' && field2 === '' && field3 === '') {
-            e.preventDefault();
-        } else {
-            return null;
-        }
-    }
-    return control;
-} // non funziona
-
 export const useHandleBmr = () => {
     const { gender, field1, field2, field3, setCount } = useContext(MyContext);
-    InputControl();
     const bmrCalc = () => {
         if (gender === 'M') {
             let formulaMan = (66.4730 + (13.7516 * field1) +
