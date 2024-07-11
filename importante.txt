@@ -14,3 +14,6 @@ Massa Grassa Corporea:
     + 0.15456 [log (statura)] - 450
     Donne FM (%) : 495 / {1.29579 - 0.35004 
     [log(vita+fianchi-collo)] + 0.22100 [log(statura)]} - 450.
+
+"start": "npm run build && node server.js",
+"start": "react-scripts start",

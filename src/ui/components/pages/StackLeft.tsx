@@ -5,83 +5,108 @@ import { MyBox } from '../widgets/MyBox';
 import { MySubmit } from '../widgets/MySubmit';
 
 import { useStyle, useStyleBox } from '../../styles/useSxStyle';
-import { MyStyledInput } from '../widgets/MyStyledInput';
 import { MyContext } from '../../../MyContext';
+import { MyInputText } from '../widgets/MyInputText';
 
 import { useHandleBmr, useResetCount } from '../functions/handleBmr';
+import { Gender } from '../../../App';
+
+interface ContextProps {
+    gender: Gender;
+    toggleGender: () => void;
+    count: string;
+    values: {[key: string]: string};
+    setValues: (func: (prevValue: string[]) => {[key: string]: string}) => void;
+    // field1: string;
+    // field2: string;
+    // field3: string;
+    isDisabled: boolean;
+    disabilita: boolean;
+    setDisabilita: (value: boolean) => void;
+    setIsDisabled: (value: boolean) => void;
+}
 
 const StackLeft: FC = () => {
     const {
         gender,
         toggleGender,
         count,
-        field1,
-        setField1,
-        field2,
-        setField2,
-        field3,
-        setField3,
+        values,
+        setValues,
+        // field1,
+        // field2,
+        // field3,
         isDisabled,
-        setIsDisabled
-    }: any = useContext(MyContext);
+        setIsDisabled,
+        disabilita,
+        // setDisabilita,
+    }: ContextProps = useContext(MyContext);
     const sx = useStyle();
     const sx1 = useStyleBox();
 
-    const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setField1(event.target.value);
+    
+    const handleChanges = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValues((prevValue: string[]) => {
+            let newObject: {[key: string]: string} = {};
+            for (let key in prevValue) {
+                newObject[key] = prevValue[key];
+            }
+            newObject[event.target.name] = event.target.value;
+            return newObject;
+        })
     }
-    const handleChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setField2(event.target.value);
-    }
-    const handleChange3 = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setField3(event.target.value);
-    }
-
+    
 
     const resetCount = useResetCount();
     const handleBmr = useHandleBmr();
 
     useEffect(() => {
         function checkFields() {
-          const fields = [field1, field2, field3];
-          if (fields.some(field => field === '')) {
-            setIsDisabled(true);
-          } else {
-            setIsDisabled(false);
-          }
+            const fields = [values['weight'], values['height'], values['age']];
+            if (fields.every(field => field !== '')) {
+                setIsDisabled(false);
+            } else {
+                setIsDisabled(true);
+            }
         }
-    
+
         checkFields();
-      }, [field1, field2, field3, setIsDisabled]);
+    }, [values, setIsDisabled]);
 
     return (
         <Stack spacing={1} sx={sx.table}>
             <Stack spacing={1} sx={sx1.boxBmr}>
-                <MyBox>
+                <MyBox component={'div'}>
                     {gender && <Typography sx={sx1.typography} variant={'h3'}>BMR {gender}</Typography>}
                     <Typography variant={'h5'}>{count}</Typography>
                 </MyBox>
             </Stack>
             <Stack spacing={1} sx={sx1.corpo}>
-                <MyBox>
+                <MyBox component={'form'} action={'saveBmr'}>
                     <Stack spacing={1} sx={sx1.field}>
-                        <MyStyledInput
+                        <MyInputText
+                            disabled={disabilita}
+                            name='weight'
                             inputMode='numeric'
-                            onChange={handleChange1}
+                            onChange={handleChanges}
                             placeholder='weight in kg'
-                            value={field1}
+                            value={values['weight']}
                         />
-                        <MyStyledInput
+                        <MyInputText
+                            disabled={disabilita}
+                            name='height'
                             inputMode='numeric'
-                            onChange={handleChange2}
+                            onChange={handleChanges}
                             placeholder='height in cm'
-                            value={field2}
+                            value={values['height']}
                         />
-                        <MyStyledInput
+                        <MyInputText
+                            disabled={disabilita}
+                            name='age'
                             inputMode='numeric'
-                            onChange={handleChange3}
+                            onChange={handleChanges}
                             placeholder='age in year'
-                            value={field3}
+                            value={values['age']}
                         />
                     </Stack>
                     <Box sx={sx1.fieldBtn}>
@@ -100,7 +125,7 @@ const StackLeft: FC = () => {
                 </MyBox>
             </Stack>
             <Stack spacing={1} sx={sx1.boxBmr}>
-                <MyBox>
+                <MyBox component={'div'}>
                     {
                         gender &&
                         <MyBtn onClick={toggleGender}>

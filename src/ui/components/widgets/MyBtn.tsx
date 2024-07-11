@@ -1,8 +1,8 @@
-import { Button, ButtonProps, darken, styled, SxProps, Theme } from "@mui/material";
-import { blueGrey, grey, red } from "@mui/material/colors";
-import { FC, ReactNode } from 'react';
+import { Button, ButtonProps, darken, SxProps, Theme } from "@mui/material";
+import { grey, red } from "@mui/material/colors";
+import { FC } from 'react';
 
-interface BtnProps {
+interface BtnProps extends ButtonProps {
     children: string;
     onClick: () => void;
     sx?: SxProps<Theme> | undefined;
@@ -10,7 +10,7 @@ interface BtnProps {
 
 
 
-export const MyBtn: FC<BtnProps> = ({ sx, children, onClick }: BtnProps) => {
+export const MyBtn: FC<BtnProps> = ({ sx, children, onClick, ...other }: BtnProps) => {
 
     return (
         <Button
@@ -28,13 +28,14 @@ export const MyBtn: FC<BtnProps> = ({ sx, children, onClick }: BtnProps) => {
             size='small'
             variant='contained'
             onClick={onClick}
+            {...other}
         >
             {children}
         </Button>
     )
 }
 
-export const MyBtnGenerico : FC<BtnProps> = ({ sx, children, onClick }) => {
+export const MyBtnGenerico : FC<BtnProps> = ({ sx, children, onClick, ...other }) => {
     return (
         <Button
             sx={{
@@ -52,6 +53,7 @@ export const MyBtnGenerico : FC<BtnProps> = ({ sx, children, onClick }) => {
             size='small'
             variant='contained'
             onClick={onClick}
+            {...other}
         >
             {children}
         </Button>

@@ -8,30 +8,55 @@
 import { useContext } from "react";
 import { MyContext } from "../../../MyContext";
 
+interface objProps {
+    value: { [key: string]: string };
+    setMyStyle: (newStyle: { [key: string]: string }) => void;
+}
+
+const controlInputs = ({ value, setMyStyle }: objProps) => {
+    const control = () => {
+        let regex = /^[0-9]/i;
+        for (let key in value) {
+            if (!regex.test(value[key])) {
+                setMyStyle({
+                    borderColor: 'red'
+                })
+            }
+        }
+        setMyStyle({
+            borderColor: 'transparent'
+        })
+    }
+    return control;
+}
+
 export const useHandleBmr = () => {
-    const { gender, field1, field2, field3, setCount } = useContext(MyContext);
+    const { gender, values, setCount, setMyStyle } = useContext(MyContext);
     const bmrCalc = () => {
+        controlInputs({value: values, setMyStyle: setMyStyle})
         if (gender === 'M') {
-            let formulaMan = (66.4730 + (13.7516 * field1) +
-                (5.0033 * field2) - (6.7550 * field3)).toFixed(2);
+            let formulaMan = (66.4730 + (13.7516 * values['weight']) +
+                (5.0033 * values['height']) - (6.7550 * values['age'])).toFixed(2);
             setCount(formulaMan);
         } else {
-            let formulaWoman = (655.0955 + (9.5634 * field1) +
-                (1.8496 * field2) - (4.6756 * field3)).toFixed(2);
+            let formulaWoman = (655.0955 + (9.5634 * values['weight']) +
+                (1.8496 * values['height']) - (4.6756 * values['age'])).toFixed(2);
             setCount(formulaWoman)
         }
     }
     return bmrCalc;
-
 }
 
 export const useResetCount = () => {
-    const { setField1, setField2, setField3, setCount } = useContext(MyContext);
+    const { setValues, setCount, setIsDisabled } = useContext(MyContext);
     const resetCount = () => {
-        setField1('');
-        setField2('');
-        setField3('');
+        setValues({
+            weight: '',
+            height: '',
+            age: '',
+        })
         setCount('');
+        setIsDisabled(true);
     };
     return resetCount;
 };
@@ -39,10 +64,10 @@ export const useResetCount = () => {
 type Setter = (value: string) => void;
 
 export const useResetFields = (setters: Setter[]) => {
-  const resetFields = () => {
-    setters.forEach(setter => setter('')); // Resetta ogni stato a una stringa vuota
-  };
-  return resetFields;
+    const resetFields = () => {
+        setters.forEach(setter => setter('')); // Resetta ogni stato a una stringa vuota
+    };
+    return resetFields;
 };
 
 

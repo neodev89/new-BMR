@@ -1,16 +1,19 @@
-import { Box } from "@mui/material";
-import { FC, ReactNode } from "react";
-import { useStyleBox } from "../styleComponents/useStyleBox";
+import { Box, SxProps, Theme } from "@mui/material";
+import { ElementType, FC, ReactNode } from "react";
+import { useStyleBox } from "../../styles/useSxStyle";
 
-interface BoxProps {
-    className?: string;
+interface MyBoxProps {
+    component: ElementType;
+    action?: string;
     children: ReactNode;
+    sx?: SxProps<Theme>;
+    onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void
 }
 
-export const MyBox: FC<BoxProps> = ({ children }: BoxProps) => {
-    const sx = useStyleBox();
+export const MyBox: FC<MyBoxProps> = ({ children, component = 'form', onSubmit }: MyBoxProps) => {
+    const sx1 = useStyleBox();
     return (
-        <Box component={'form'} sx={sx.myBox} action="saveBmr">
+        <Box component={component} sx={sx1.myBox} onSubmit={onSubmit}>
             {children}
         </Box>
     )

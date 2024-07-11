@@ -23,6 +23,6 @@
     align-items: center;
     justify-content: space-evenly;
     height: 90%;
-    width: 70%;
-    /* border: 2px dotted blue; */
+    width: 75%;
+    border: 2px dotted blue;
 }
