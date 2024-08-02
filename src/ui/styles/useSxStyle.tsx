@@ -33,20 +33,20 @@ export function useStyle() {
             height: '4rem',
             width: '100%',
             backgroundColor: 'transparent',
-            '& :hover': {
+            '&:hover': {
                 backgroundColor: darken(yellow[400], 0.2),
             },
             '& .MuiOutlinedInput-root': {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'center',
-                height: '99%',
+                height: '100%', // Cambiato da 99% a 100%
                 width: '100%',
                 backgroundColor: 'transparent',
                 '& fieldset': {
                     backgroundColor: yellow[200],
                 },
-                '% :focus-within': {
+                '&:focus-within': { // Corretto da % :focus-within a &:focus-within
                     backgroundColor: yellow[200],
                 }
             },
@@ -58,6 +58,7 @@ export function useStyle() {
                 zIndex: 1,
             }
         })
+        
 
     }
 }
@@ -67,10 +68,12 @@ export function useStyleBox() {
     return {
         boxBmr: sx({
             justifyContent: 'center',
-            height: 'calc(100% / 4)',
+            height: '25%',
+            minWidth: '150px',
             width: '99%',
+            padding: 0,
             margin: 2,
-            border: '1px solid red',
+            border: '3px solid red',
             borderRadius: '32.5rem',
         }),
         corpo: sx({
@@ -79,7 +82,7 @@ export function useStyleBox() {
             width: '100%',
             border: '1px dashed green',
             // borderRadius: '12% 12%',
-            padding: '1.5rem',
+            padding: 0,
         }),
         typography: sx({
             fontFamily: 'MontSerrat',
@@ -87,10 +90,10 @@ export function useStyleBox() {
             color: gender === 'M' ? blue[300] : pink[200],
         }),
         field: sx({
-            height: '99%',
+            height: '80%',
             width: '100%',
             justifyContent: 'center',
-            border: '1px dashed green',
+            border: '3px solid purple',
         }),
         fieldBtn: sx({
             display: 'flex',
@@ -108,9 +111,9 @@ export function useStyleBox() {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            height: '99%',
+            height: '100%',
             width: '99%',
-            border: '1px solid red',
+            border: '1px solid orange',
         })
     }; // Aggiungi gender come dipendenza di useMemo
 }

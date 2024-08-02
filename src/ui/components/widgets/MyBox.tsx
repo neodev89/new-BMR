@@ -8,12 +8,13 @@ interface MyBoxProps {
     children: ReactNode;
     sx?: SxProps<Theme>;
     onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void
+    method?: string;
 }
 
-export const MyBox: FC<MyBoxProps> = ({ children, component = 'form', onSubmit }: MyBoxProps) => {
+export const MyBox: FC<MyBoxProps> = ({ children, component = 'form', onSubmit, ...other }: MyBoxProps) => {
     const sx1 = useStyleBox();
     return (
-        <Box component={component} sx={sx1.myBox} onSubmit={onSubmit}>
+        <Box component={component} sx={sx1.myBox} onSubmit={onSubmit} {...other}>
             {children}
         </Box>
     )

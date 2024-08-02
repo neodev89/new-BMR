@@ -8,7 +8,7 @@ import { useStyle } from './ui/styles/useSxStyle';
 import { MyContext } from './MyContext';
 
 import BMR_img from './ui/images/BMR_img.svg';
-import { SignInPage } from './ui/components/pages/signInPage';
+import { LoginPage } from './ui/components/pages/signInPage';
 
 export type Gender = 'M' | 'F'
 
@@ -101,12 +101,12 @@ function App() {
           backgroundPosition: '50% 25%',
           filter: 'drop-shadow(5px 5px 5px black)',
         }}>
-        {sign ? (<Box className={classStyle.central}>
+        {!sign ? (<Box className={classStyle.central}>
           <StackLeft />
           <StackRight />
         </Box>) : (
           <Box className={classStyle.central}>
-            <SignInPage />
+            <LoginPage />
           </Box>
         )}
 

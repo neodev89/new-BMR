@@ -22,7 +22,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
-    height: 90%;
+    height: 95%;
     width: 75%;
     border: 2px dotted blue;
 }

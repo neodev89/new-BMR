@@ -11,15 +11,12 @@ import { MyInputText } from '../widgets/MyInputText';
 import { useHandleBmr, useResetCount } from '../functions/handleBmr';
 import { Gender } from '../../../App';
 
-interface ContextProps {
+interface StackLeftContextProps {
     gender: Gender;
     toggleGender: () => void;
     count: string;
     values: {[key: string]: string};
     setValues: (func: (prevValue: string[]) => {[key: string]: string}) => void;
-    // field1: string;
-    // field2: string;
-    // field3: string;
     isDisabled: boolean;
     disabilita: boolean;
     setDisabilita: (value: boolean) => void;
@@ -33,14 +30,11 @@ const StackLeft: FC = () => {
         count,
         values,
         setValues,
-        // field1,
-        // field2,
-        // field3,
         isDisabled,
         setIsDisabled,
         disabilita,
         // setDisabilita,
-    }: ContextProps = useContext(MyContext);
+    }: StackLeftContextProps = useContext(MyContext);
     const sx = useStyle();
     const sx1 = useStyleBox();
 
@@ -75,7 +69,7 @@ const StackLeft: FC = () => {
 
     return (
         <Stack spacing={1} sx={sx.table}>
-            <Stack spacing={1} sx={sx1.boxBmr}>
+            <Stack spacing={0} sx={sx1.boxBmr}>
                 <MyBox component={'div'}>
                     {gender && <Typography sx={sx1.typography} variant={'h3'}>BMR {gender}</Typography>}
                     <Typography variant={'h5'}>{count}</Typography>

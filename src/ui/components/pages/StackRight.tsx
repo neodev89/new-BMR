@@ -7,18 +7,34 @@ import { MyBox } from '../widgets/MyBox';
 // import { MyInputText } from '../widgets/MyInputText';
 import { useResetFields } from '../functions/handleBmr';
 import { MyBtnGenerico } from '../widgets/MyBtn';
-
+import { Gender } from '../../../App';
+import { MyInputText } from '../widgets/MyInputText';
+import { MySubmit } from '../widgets/MySubmit';
+interface StackRightContextProps {
+    gender: Gender;
+    count: string;
+    values: { [key: string]: string };
+    setValues: (func: (prevValue: string[]) => { [key: string]: string }) => void;
+    isDisabled: boolean;
+    disabilita: boolean;
+    setDisabilita: (value: boolean) => void;
+    setIsDisabled: (value: boolean) => void;
+}
 
 const StackRight: FC = () => {
-    const { gender, field4, setField4, field5, setField5, field6,
-        setField6, field7, setField7, countImc, setCountImc,
-        setDisabilita,
-    }: any = useContext(MyContext);
+    const {
+        gender,
+        count,
+        values, setValues,
+        isDisabled, setIsDisabled,
+        disabilita, setDisabilita,
+    }: StackRightContextProps = useContext(MyContext);
+
 
     const sx = useStyle();
     const sx1 = useStyleBox();
     // const handleCalc = useHandleIMC();
-    const resetField = useResetFields([setCountImc, setField4, setField5, setField6, setField7]);
+    // const resetField = useResetFields([setCountImc, setField4, setField5, setField6, setField7]);
 
 
     // const handleChange4 = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,66 +50,84 @@ const StackRight: FC = () => {
     //     setField7(event.target.value);
     // }
 
-    useEffect(() => {
-        function checkFields() {
-          const fields = [field4, field5, field6, field7];
-          if (fields.some(field => field === '')) {
-            setDisabilita(true);
-          } else {
-            setDisabilita(false);
-          }
-        }
-    
-        checkFields();
-      }, [field4, field5, field6, field7, setDisabilita]);
+    // useEffect(() => {
+    //     function checkFields() {
+    //       const fields = [field4, field5, field6, field7];
+    //       if (fields.some(field => field === '')) {
+    //         setDisabilita(true);
+    //       } else {
+    //         setDisabilita(false);
+    //       }
+    //     }
+
+    //     checkFields();
+    //   }, [field4, field5, field6, field7, setDisabilita]);
+
+    const handleChanges = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValues((prevValue: string[]) => {
+            let newObject: {[key: string]: string} = {};
+            for (let key in prevValue) {
+                newObject[key] = prevValue[key];
+            }
+            newObject[event.target.name] = event.target.value;
+            return newObject;
+        })
+    }
 
     return (
         <Stack spacing={1} sx={sx.table}>
-            <Stack spacing={1} sx={sx1.boxBmr}>
+            <Stack spacing={0} sx={sx1.boxBmr}>
                 <MyBox component={'div'}>
                     {gender && <Typography sx={sx1.typography} variant={'h3'}>IMC</Typography>}
-                    <Typography variant={'h5'}>{countImc}</Typography>
+                    <Typography variant={'h5'}>{'countImc'}</Typography>
                 </MyBox>
             </Stack>
             <Stack spacing={1} sx={sx1.corpo}>
                 <MyBox component={'div'}>
                     <Stack spacing={1} sx={sx1.field}>
-                        {/* <MyStyledInput
+                        <MyInputText
+                            disabled={disabilita}
+                            name={''}
                             inputMode='numeric'
-                            onChange={handleChange4}
+                            onChange={handleChanges}
                             placeholder='larghezza vita in cm'
-                            value={field4}
+                            value={values['nome']}
                         />
-                        <MyStyledInput
+                        <MyInputText
+                            disabled={disabilita}
+                            name={''}
                             inputMode='numeric'
-                            onChange={handleChange5}
+                            onChange={handleChanges}
                             placeholder='larghezza collo in cm'
-                            value={field5}
+                            value={values['nome']}
                         />
-                        <MyStyledInput
+                        <MyInputText
+                            disabled={disabilita}
+                            name={''}
                             inputMode='numeric'
-                            onChange={handleChange6}
+                            onChange={handleChanges}
                             placeholder='larghezza fianchi in cm'
-                            value={field6}
-                            disabled={isDisabled}
+                            value={values['nome']}
                         />
-                        <MyStyledInput
+                        <MyInputText
+                            disabled={disabilita}
+                            name={''}
                             inputMode='numeric'
-                            onChange={handleChange7}
+                            onChange={handleChanges}
                             placeholder='statura in cm'
-                            value={field7}
-                        /> */}
+                            value={values['nome']}
+                        />
                     </Stack>
                     <Box sx={sx1.fieldBtn}>
 
-                        {/* <MySubmit gender={gender}
-                            onClick={handleCalc}
+                        <MySubmit gender={gender}
+                            onClick={() => alert('scaccola')}
                             disabled={disabilita}
                         >
                             Calcola
-                        </MySubmit> */}
+                        </MySubmit>
                         <MyBtnGenerico sx={sx.cancella}
-                            onClick={resetField}>
+                            onClick={() => alert('ciao')}>
                             Cancella
                         </MyBtnGenerico>
                     </Box>

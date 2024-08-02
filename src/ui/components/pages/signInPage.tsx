@@ -2,67 +2,56 @@ import { MyInputText } from '../widgets/MyInputText';
 import { MyBox } from '../widgets/MyBox';
 import { Stack, Typography } from '@mui/material';
 import * as React from 'react';
+import { QueryClient, QueryClientProvider, useMutation } from '@tanstack/react-query';
 
 import { MyContext } from '../../../MyContext';
 import { useStyle, useStyleBox } from '../../styles/useSxStyle';
 import { SubmitGeneral } from '../widgets/SubmitGeneral';
 
+const queryClient = new QueryClient();
+interface User {
+    nome: string;
+    cognome: string;
+    email: string;
+    data_di_nascita: string;
+}
 
-export const SignInPage = () => {
-    const sx = useStyle()
+const SignInPage = () => {
+    const sx = useStyle();
     const sx1 = useStyleBox();
-    // eslint-disable-next-line
-    const [registrazione, setRegistrazione] = React.useState<string[]>([]);
-
-    const { values, setValues }: any = React.useContext(MyContext);
+    const { values, setValues, registrazione }: any = React.useContext(MyContext);
 
     const handleChanges = (event: React.ChangeEvent<HTMLInputElement>) => {
-
-        setValues((prevValue: string[]) => ({
+        setValues((prevValue: User) => ({
             ...prevValue,
             [event.target.name]: event.target.value,
-        }))
-    }
+        }));
+    };
+
+    const mutation = useMutation<User, Error, User>({
+        mutationFn: async (newUser: User) => {
+          const response = await fetch('/saveUser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newUser),
+            });
+            console.log(response);
+            return await response.json();
+        },
+        onSuccess: (data: User) => {
+          console.log('Dati salvati con successo:', data);
+        },
+        onError: (error: Error) => {
+          console.error('Errore durante il salvataggio dei dati:', error);
+        },
+      });     
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Previene il comportamento di invio del form predefinito
-
-        // Crea un oggetto con i dati del form
-        const formData = {
-            nome: values['nome'],
-            cognome: values['cognome'],
-            email: values['email'],
-            data_di_nascita: values['data_di_nascita'],
-        };
-
-        console.log(formData);
-        fetch('/saveUser', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(formData),
-        })
-            .then(res => res.json())
-            .then(data => console.log(data))
-            .catch((e) => {
-                console.log(`Error: ${e}`)
-            })
-
-        // Qui puoi inviare i dati a un server o a un'API
-        // fetch('/saveUser', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(formData),
-        // })
-        // .then(response => response.json())
-        // .then(data => console.log(data))
-        // .catch((error) => {
-        //     console.error('Error:', error);
-        // });
-    }
+        mutation.mutate(registrazione);
+    };
 
     return (
         <Stack spacing={1} sx={sx.table}>
@@ -76,7 +65,7 @@ export const SignInPage = () => {
                 </MyBox>
             </Stack>
             <Stack spacing={1} sx={sx1.corpo}>
-                <MyBox component={'form'} action='/saveUser'onSubmit={handleSubmit}>
+                <MyBox component={'form'} onSubmit={handleSubmit}>
                     <Stack spacing={1} sx={sx1.field}>
                         <MyInputText
                             placeholder='nome'
@@ -102,7 +91,7 @@ export const SignInPage = () => {
                         <MyInputText
                             placeholder='data di nascita'
                             inputMode='text'
-                            type="date"
+                            type='date'
                             name='data_di_nascita'
                             value={values['data_di_nascita']}
                             onChange={handleChanges}
@@ -114,6 +103,11 @@ export const SignInPage = () => {
                 </MyBox>
             </Stack>
         </Stack>
+    );
+};
 
-    )
-}
+export const LoginPage = () => (
+    <QueryClientProvider client={queryClient}>
+        <SignInPage />
+    </QueryClientProvider>
+);

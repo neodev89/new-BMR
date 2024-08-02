@@ -1,0 +1,237 @@
+Copilot
+Inviato da Copilot:
+Capisco, hai creato un contesto generico tipizzato con any e poi definisci le interfacce specifiche per ogni componente in base alle necessità. Questo approccio può essere utile per mantenere la flessibilità, ma può anche rendere il codice meno tipizzato e più difficile da mantenere.
+
+Se questo approccio funziona per te e ti permette di gestire meglio le tue esigenze, va bene così. Tuttavia, se desideri migliorare la tipizzazione e la sicurezza del tuo codice, potresti considerare di tipizzare il contesto in modo più specifico.
+
+Ecco un esempio di come potresti tipizzare il contesto in modo più specifico, mantenendo la flessibilità:
+
+Definisci un’interfaccia generica per il contesto:
+TypeScript
+
+export type Gender = 'M' | 'F';
+
+interface MyContextProps {
+    sign: boolean;
+    setSign: React.Dispatch<React.SetStateAction<boolean>>;
+    gender: Gender;
+    setGender: React.Dispatch<React.SetStateAction<Gender>>;
+    count: string;
+    setCount: React.Dispatch<React.SetStateAction<string>>;
+    countImc: string;
+    setCountImc: React.Dispatch<React.SetStateAction<string>>;
+    field1: string;
+    setField1: React.Dispatch<React.SetStateAction<string>>;
+    field2: string;
+    setField2: React.Dispatch<React.SetStateAction<string>>;
+    field3: string;
+    setField3: React.Dispatch<React.SetStateAction<string>>;
+    field4: string;
+    setField4: React.Dispatch<React.SetStateAction<string>>;
+    field5: string;
+    setField5: React.Dispatch<React.SetStateAction<string>>;
+    field6: string;
+    setField6: React.Dispatch<React.SetStateAction<string>>;
+    field7: string;
+    setField7: React.Dispatch<React.SetStateAction<string>>;
+    values: { [key: string]: string };
+    setValues: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
+    myStyle: { [key: string]: string };
+    setMyStyle: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
+    isDisabled: boolean;
+    setIsDisabled: React.Dispatch<React.SetStateAction<boolean>>;
+    disabilita: boolean;
+    setDisabilita: React.Dispatch<React.SetStateAction<boolean>>;
+}
+Contenuto generato dall'intelligenza artificiale. Rivedi e usa con attenzione. Ulteriori informazioni su FAQ.
+Crea il contesto utilizzando questa interfaccia:
+TypeScript
+
+import { createContext } from "react";
+import { MyContextProps } from './path/to/your/interface';
+
+// Creazione del Context
+export const MyContext = createContext<MyContextProps | undefined>(undefined);
+Contenuto generato dall'intelligenza artificiale. Rivedi e usa con attenzione. Ulteriori informazioni su FAQ.
+Crea un provider per il contesto:
+TypeScript
+
+import React, { useState } from 'react';
+import { MyContext } from './MyContext';
+import { MyContextProps, Gender } from './path/to/your/interface';
+
+const MyProvider: React.FC = ({ children }) => {
+    const [sign, setSign] = useState<boolean>(false);
+    const [gender, setGender] = useState<Gender>('F');
+    const [count, setCount] = useState<string>('');
+    const [countImc, setCountImc] = useState<string>('');
+    const [field1, setField1] = useState<string>('');
+    const [field2, setField2] = useState<string>('');
+    const [field3, setField3] = useState<string>('');
+    const [field4, setField4] = useState<string>('');
+    const [field5, setField5] = useState<string>('');
+    const [field6, setField6] = useState<string>('');
+    const [field7, setField7] = useState<string>('');
+    const [values, setValues] = useState<{ [key: string]: string }>({});
+    const [myStyle, setMyStyle] = useState<{ [key: string]: string }>({ borderColor: 'inherit' });
+    const [isDisabled, setIsDisabled] = useState<boolean>(false);
+    const [disabilita, setDisabilita] = useState<boolean>(false);
+
+    return (
+        <MyContext.Provider value={{
+            sign, setSign,
+            gender, setGender,
+            count, setCount,
+            countImc, setCountImc,
+            field1, setField1,
+            field2, setField2,
+            field3, setField3,
+            field4, setField4,
+            field5, setField5,
+            field6, setField6,
+            field7, setField7,
+            values, setValues,
+            myStyle, setMyStyle,
+            isDisabled, setIsDisabled,
+            disabilita, setDisabilita
+        }}>
+            {children}
+        </MyContext.Provider>
+    );
+};
+
+export { MyProvider };
+Contenuto generato dall'intelligenza artificiale. Rivedi e usa con attenzione. Ulteriori informazioni su FAQ.
+Utilizza il contesto nel componente StackLeft:
+TypeScript
+
+import { FC, useContext, useEffect } from 'react';
+import { Box, Stack, Typography } from '@mui/material';
+import { MyBtn, MyBtnGenerico } from '../widgets/MyBtn';
+import { MyBox } from '../widgets/MyBox';
+import { MySubmit } from '../widgets/MySubmit';
+
+import { useStyle, useStyleBox } from '../../styles/useSxStyle';
+import { MyContext } from '../../../MyContext';
+import { MyInputText } from '../widgets/MyInputText';
+
+import { useHandleBmr, useResetCount } from '../functions/handleBmr';
+import { Gender } from '../../../App';
+
+interface StackLeftContextProps {
+    gender: Gender;
+    toggleGender: () => void;
+    count: string;
+    values: { [key: string]: string };
+    setValues: (func: (prevValue: { [key: string]: string }) => { [key: string]: string }) => void;
+    isDisabled: boolean;
+    disabilita: boolean;
+    setDisabilita: (value: boolean) => void;
+    setIsDisabled: (value: boolean) => void;
+}
+
+const StackLeft: FC = () => {
+    const {
+        gender,
+        toggleGender,
+        count,
+        values,
+        setValues,
+        isDisabled,
+        setIsDisabled,
+        disabilita,
+    }: StackLeftContextProps = useContext(MyContext);
+    const sx = useStyle();
+    const sx1 = useStyleBox();
+
+    const handleChanges = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValues((prevValue: { [key: string]: string }) => ({
+            ...prevValue,
+            [event.target.name]: event.target.value,
+        }));
+    };
+
+    const resetCount = useResetCount();
+    const handleBmr = useHandleBmr();
+
+    useEffect(() => {
+        function checkFields() {
+            const fields = [values['weight'], values['height'], values['age']];
+            if (fields.every(field => field !== '')) {
+                setIsDisabled(false);
+            } else {
+                setIsDisabled(true);
+            }
+        }
+
+        checkFields();
+    }, [values, setIsDisabled]);
+
+    return (
+        <Stack spacing={1} sx={sx.table}>
+            <Stack spacing={1} sx={sx1.boxBmr}>
+                <MyBox component={'div'}>
+                    {gender && <Typography sx={sx1.typography} variant={'h3'}>BMR {gender}</Typography>}
+                    <Typography variant={'h5'}>{count}</Typography>
+                </MyBox>
+            </Stack>
+            <Stack spacing={1} sx={sx1.corpo}>
+                <MyBox component={'form'} action={'saveBmr'}>
+                    <Stack spacing={1} sx={sx1.field}>
+                        <MyInputText
+                            disabled={disabilita}
+                            name='weight'
+                            inputMode='numeric'
+                            onChange={handleChanges}
+                            placeholder='weight in kg'
+                            value={values['weight']}
+                        />
+                        <MyInputText
+                            disabled={disabilita}
+                            name='height'
+                            inputMode='numeric'
+                            onChange={handleChanges}
+                            placeholder='height in cm'
+                            value={values['height']}
+                        />
+                        <MyInputText
+                            disabled={disabilita}
+                            name='age'
+                            inputMode='numeric'
+                            onChange={handleChanges}
+                            placeholder='age in year'
+                            value={values['age']}
+                        />
+                    </Stack>
+                    <Box sx={sx1.fieldBtn}>
+                        <MySubmit gender={gender}
+                            onClick={handleBmr}
+                            disabled={isDisabled}
+                        >
+                            Calcola
+                        </MySubmit>
+                        <MyBtnGenerico sx={sx.cancella}
+                            onClick={resetCount}
+                        >
+                            Cancella
+                        </MyBtnGenerico>
+                    </Box>
+                </MyBox>
+            </Stack>
+            <Stack spacing={1} sx={sx1.boxBmr}>
+                <MyBox component={'div'}>
+                    {
+                        gender &&
+                        <MyBtn onClick={toggleGender}>
+                            Seleziona il genere
+                        </MyBtn>
+                    }
+                </MyBox>
+            </Stack>
+        </Stack>
+    );
+};
+
+export default StackLeft;
+Contenuto generato dall'intelligenza artificiale. Rivedi e usa con attenzione. Ulteriori informazioni su FAQ.
+In questo modo, hai un contesto ben tipizzato che può essere utilizzato in tutti i tuoi componenti. Se hai altre domande o hai bisogno di ulteriori chiarimenti, sono qui per aiutarti! 😊
