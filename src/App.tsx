@@ -12,26 +12,12 @@ import { LoginPage } from './ui/components/pages/signInPage';
 
 export type Gender = 'M' | 'F'
 
-// const genders = [
-//     { value: 'M', label: 'M' },
-//     { value: 'F', label: 'F' },
-//   ]
-
-
-
 function App() {
   // eslint-disable-next-line
   const [sign, setSign] = useState<boolean>(false),
     [gender, setGender] = useState<Gender>('F'),
     [count, setCount] = useState<string>(''),
     [countImc, setCountImc] = useState<string>(''),
-    [field1, setField1] = useState<string>(''),
-    [field2, setField2] = useState<string>(''),
-    [field3, setField3] = useState<string>(''),
-    [field4, setField4] = useState<string>(''),
-    [field5, setField5] = useState<string>(''),
-    [field6, setField6] = useState<string>(''),
-    [field7, setField7] = useState<string>(''),
     [values, setValues] = useState<{ [key: string]: string }>({}),
     [myStyle, setMyStyle] = useState<{ [key: string]: string }>({ borderColor: 'inherit' }),
     [isDisabled, setIsDisabled] = useState<boolean>(false),
@@ -71,20 +57,6 @@ function App() {
       sx,
       values,
       setValues,
-      field1,
-      setField1,
-      field2,
-      setField2,
-      field3,
-      setField3,
-      field4,
-      setField4,
-      field5,
-      setField5,
-      field6,
-      setField6,
-      field7,
-      setField7,
       isDisabled,
       setIsDisabled,
       disabilita,
@@ -93,6 +65,7 @@ function App() {
       setCountImc,
       myStyle,
       setMyStyle,
+      sign, setSign,
     }}>
       <Stack spacing={1} className={classStyle.app}
         style={{
@@ -101,7 +74,7 @@ function App() {
           backgroundPosition: '50% 25%',
           filter: 'drop-shadow(5px 5px 5px black)',
         }}>
-        {!sign ? (<Box className={classStyle.central}>
+        {sign ? (<Box className={classStyle.central}>
           <StackLeft />
           <StackRight />
         </Box>) : (

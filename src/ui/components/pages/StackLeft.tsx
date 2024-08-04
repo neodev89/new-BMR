@@ -15,8 +15,8 @@ interface StackLeftContextProps {
     gender: Gender;
     toggleGender: () => void;
     count: string;
-    values: {[key: string]: string};
-    setValues: (func: (prevValue: string[]) => {[key: string]: string}) => void;
+    values: { [key: string]: string };
+    setValues: (func: (prevValue: string[]) => { [key: string]: string }) => void;
     isDisabled: boolean;
     disabilita: boolean;
     setDisabilita: (value: boolean) => void;
@@ -38,10 +38,10 @@ const StackLeft: FC = () => {
     const sx = useStyle();
     const sx1 = useStyleBox();
 
-    
+
     const handleChanges = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValues((prevValue: string[]) => {
-            let newObject: {[key: string]: string} = {};
+            let newObject: { [key: string]: string } = {};
             for (let key in prevValue) {
                 newObject[key] = prevValue[key];
             }
@@ -49,7 +49,7 @@ const StackLeft: FC = () => {
             return newObject;
         })
     }
-    
+
 
     const resetCount = useResetCount();
     const handleBmr = useHandleBmr();
@@ -63,9 +63,9 @@ const StackLeft: FC = () => {
                 setIsDisabled(true);
             }
         }
-
         checkFields();
     }, [values, setIsDisabled]);
+
 
     return (
         <Stack spacing={1} sx={sx.table}>

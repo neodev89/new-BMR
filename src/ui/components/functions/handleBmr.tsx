@@ -33,7 +33,7 @@ const controlInputs = ({ value, setMyStyle }: objProps) => {
 export const useHandleBmr = () => {
     const { gender, values, setCount, setMyStyle } = useContext(MyContext);
     const bmrCalc = () => {
-        controlInputs({value: values, setMyStyle: setMyStyle})
+        controlInputs({ value: values, setMyStyle: setMyStyle })
         if (gender === 'M') {
             let formulaMan = (66.4730 + (13.7516 * values['weight']) +
                 (5.0033 * values['height']) - (6.7550 * values['age'])).toFixed(2);

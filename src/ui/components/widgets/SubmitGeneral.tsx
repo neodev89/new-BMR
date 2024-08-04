@@ -5,7 +5,7 @@ import React, { ReactNode } from "react";
 interface MyGeneralSubmit {
     sx?: SxProps<Theme>;
     children: ReactNode;
-}
+  }
 
 export const SubmitGeneral = ({ sx, children, ...other }: MyGeneralSubmit) => {
 

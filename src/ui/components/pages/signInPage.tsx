@@ -1,95 +1,94 @@
 import { MyInputText } from '../widgets/MyInputText';
 import { MyBox } from '../widgets/MyBox';
 import { Stack, Typography } from '@mui/material';
-import * as React from 'react';
-import { QueryClient, QueryClientProvider, useMutation } from '@tanstack/react-query';
+import { ChangeEvent, Dispatch, FC, FormEvent, SetStateAction, useContext, useEffect } from 'react';
 
 import { MyContext } from '../../../MyContext';
 import { useStyle, useStyleBox } from '../../styles/useSxStyle';
 import { SubmitGeneral } from '../widgets/SubmitGeneral';
+import { useMatchUser } from '../functions/matchUser';
 
-const queryClient = new QueryClient();
-interface User {
-    nome: string;
-    cognome: string;
-    email: string;
-    data_di_nascita: string;
+interface ContextProps {
+    values: { [key: string]: string };
+    setValues: (func:
+        (prevValue: { [key: string]: string }) => {
+            [key: string]: string
+        }) => void;
+    sign: boolean;
+    setSign: Dispatch<SetStateAction<boolean>>;
 }
 
-const SignInPage = () => {
-    const sx = useStyle();
-    const sx1 = useStyleBox();
-    const { values, setValues, registrazione }: any = React.useContext(MyContext);
+export const LoginPage: FC = () => {
+    const
+        sx = useStyle(),
+        sx1 = useStyleBox(),
+        { values, setValues, sign, setSign }: ContextProps = useContext(MyContext),
+        MatchUser = useMatchUser()
+        ;
 
-    const handleChanges = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValues((prevValue: User) => ({
+    const handleChanges = (event: ChangeEvent<HTMLInputElement>) => {
+        setValues((prevValue: { [key: string]: string }) => ({
             ...prevValue,
             [event.target.name]: event.target.value,
         }));
     };
 
-    const mutation = useMutation<User, Error, User>({
-        mutationFn: async (newUser: User) => {
-          const response = await fetch('/saveUser', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newUser),
-            });
-            console.log(response);
-            return await response.json();
-        },
-        onSuccess: (data: User) => {
-          console.log('Dati salvati con successo:', data);
-        },
-        onError: (error: Error) => {
-          console.error('Errore durante il salvataggio dei dati:', error);
-        },
-      });     
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Previene il comportamento di invio del form predefinito
-        mutation.mutate(registrazione);
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const userToMatch = MatchUser({
+            nome: values['nome'],
+            cognome: values['cognome'],
+            email: values['email'],
+            data_di_nascita: values['data_di_nascita']
+        });
+        console.log(`Result: ${JSON.stringify(userToMatch, null, 2)}`);
+        return userToMatch;
+        // Use userToMatch for further processing
     };
+
+    useEffect(() => {
+        if (sign) {
+            // Esegui ulteriori azioni, come il reindirizzamento a un'altra pagina
+            console.log("Match successful, redirecting...");
+            // Esempio di reindirizzamento:
+            // window.location.href = "/nextPage";
+        }
+    }, [sign]);
+
 
     return (
         <Stack spacing={1} sx={sx.table}>
             <Stack spacing={1} sx={sx1.boxBmr}>
                 <MyBox component={'div'}>
-                    {registrazione ? (
-                        <Typography variant={'h4'}>Registrati</Typography>
-                    ) : (
-                        <Typography variant={'h4'}>Benvenuto {registrazione}</Typography>
-                    )}
+                    <Typography variant={'h4'}>Benvenuto</Typography>
                 </MyBox>
             </Stack>
             <Stack spacing={1} sx={sx1.corpo}>
                 <MyBox component={'form'} onSubmit={handleSubmit}>
                     <Stack spacing={1} sx={sx1.field}>
                         <MyInputText
-                            placeholder='nome'
+                            placeholder='Admin'
                             inputMode='text'
                             name='nome'
                             value={values['nome']}
                             onChange={handleChanges}
                         />
                         <MyInputText
-                            placeholder='cognome'
+                            placeholder='Admin'
                             inputMode='text'
                             name='cognome'
                             value={values['cognome']}
                             onChange={handleChanges}
                         />
                         <MyInputText
-                            placeholder='email'
+                            placeholder='bula@bula.bmr'
                             inputMode='text'
                             name='email'
                             value={values['email']}
                             onChange={handleChanges}
                         />
                         <MyInputText
-                            placeholder='data di nascita'
+                            placeholder='01/01/1900'
                             inputMode='text'
                             type='date'
                             name='data_di_nascita'
@@ -104,10 +103,4 @@ const SignInPage = () => {
             </Stack>
         </Stack>
     );
-};
-
-export const LoginPage = () => (
-    <QueryClientProvider client={queryClient}>
-        <SignInPage />
-    </QueryClientProvider>
-);
+}

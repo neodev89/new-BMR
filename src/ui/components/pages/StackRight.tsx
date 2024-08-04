@@ -87,35 +87,35 @@ const StackRight: FC = () => {
                     <Stack spacing={1} sx={sx1.field}>
                         <MyInputText
                             disabled={disabilita}
-                            name={''}
+                            name={'vita'}
                             inputMode='numeric'
                             onChange={handleChanges}
                             placeholder='larghezza vita in cm'
-                            value={values['nome']}
+                            value={values['vita']}
                         />
                         <MyInputText
                             disabled={disabilita}
-                            name={''}
+                            name={'collo'}
                             inputMode='numeric'
                             onChange={handleChanges}
                             placeholder='larghezza collo in cm'
-                            value={values['nome']}
+                            value={values['collo']}
                         />
                         <MyInputText
                             disabled={disabilita}
-                            name={''}
+                            name={'fianchi'}
                             inputMode='numeric'
                             onChange={handleChanges}
                             placeholder='larghezza fianchi in cm'
-                            value={values['nome']}
+                            value={values['fianchi']}
                         />
                         <MyInputText
                             disabled={disabilita}
-                            name={''}
+                            name={'statura'}
                             inputMode='numeric'
                             onChange={handleChanges}
                             placeholder='statura in cm'
-                            value={values['nome']}
+                            value={values['statura']}
                         />
                     </Stack>
                     <Box sx={sx1.fieldBtn}>
