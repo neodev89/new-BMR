@@ -7,6 +7,7 @@
 
 import { useContext } from "react";
 import { MyContext } from "../../../MyContext";
+import { LeftContext } from "../pages/StackLeft";
 
 interface objProps {
     value: { [key: string]: string };
@@ -15,48 +16,76 @@ interface objProps {
 
 const controlInputs = ({ value, setMyStyle }: objProps) => {
     const control = () => {
-        let regex = /^[0-9]/i;
+        let regex = /^[0-9]+$/;
         for (let key in value) {
             if (!regex.test(value[key])) {
                 setMyStyle({
                     borderColor: 'red'
-                })
+                });
+                return false;
             }
         }
         setMyStyle({
             borderColor: 'transparent'
-        })
-    }
+        });
+        return true;
+    };
     return control;
-}
+};
 
 export const useHandleBmr = () => {
-    const { gender, values, setCount, setMyStyle } = useContext(MyContext);
-    const bmrCalc = () => {
-        controlInputs({ value: values, setMyStyle: setMyStyle })
+    const { gender, setCount } = useContext(MyContext);
+    const bmrCalc = (values: { weight: string; height: string; age: string; }) => {
+
+        if (values['weight'] === '' || values['height'] === '' || values['age'] === '') {
+            alert('Completa tutti i campi');
+            return;
+        }
+
+        console.log(`${values['weight']}, ${values['height']}, ${values['age']}`);
+
+        const weight = parseInt(values['weight']);
+        const height = parseInt(values['height']);
+        const age = parseInt(values['age']);
+
+        console.log(typeof (weight), typeof (age), typeof (height));
+
+        if (weight && height && age) {
+            console.log('OK')
+        } else {
+            if (isNaN(weight) || isNaN(height) || isNaN(age)) {
+                console.log(`${weight}, ${height}, ${age}`)
+            }
+        }
+
         if (gender === 'M') {
-            let formulaMan = (66.4730 + (13.7516 * values['weight']) +
-                (5.0033 * values['height']) - (6.7550 * values['age'])).toFixed(2);
+            let formulaMan = (66.4730 + (13.7516 * weight) +
+                (5.0033 * height) - (6.7550 * age)).toFixed(2);
+            console.log(typeof (formulaMan))
             setCount(formulaMan);
         } else {
-            let formulaWoman = (655.0955 + (9.5634 * values['weight']) +
-                (1.8496 * values['height']) - (4.6756 * values['age'])).toFixed(2);
-            setCount(formulaWoman)
+            let formulaWoman = (655.0955 + (9.5634 * weight) +
+                (1.8496 * height) - (4.6756 * age)).toFixed(2);
+            setCount(formulaWoman);
         }
-    }
+    };
     return bmrCalc;
+};
+
+interface ResetProps {
+    isDisabledBtn: boolean;
+    setIsDisabledBtn: (val: boolean) => void;
 }
 
 export const useResetCount = () => {
-    const { setValues, setCount, setIsDisabled } = useContext(MyContext);
-    const resetCount = () => {
-        setValues({
-            weight: '',
-            height: '',
-            age: '',
-        })
+    const { isDisabledBtn, setIsDisabledBtn } = useContext<ResetProps>(LeftContext)
+    const { setCount } = useContext(MyContext);
+    const resetCount = (values: { weight: string, height: string, age: string }) => {
+        values.weight = '';
+        values.height = '';
+        values.age = '';
+        setIsDisabledBtn(!isDisabledBtn);
         setCount('');
-        setIsDisabled(true);
     };
     return resetCount;
 };
@@ -70,23 +99,44 @@ export const useResetFields = (setters: Setter[]) => {
     return resetFields;
 };
 
-
 export const useHandleIMC = () => {
-    const { gender, field4, field5, field6, field7, setCountImc } = useContext(MyContext);
-    const calculateBodyFat = () => {
-        if (gender === 'M') {
-            const logVitaCollo = Math.log10(field4 - field5);
-            const logStatura = Math.log10(field7);
-            const bodyFat = 495 / (1.0324 - 0.19077 * logVitaCollo + 0.15456 * logStatura) - 450;
-            setCountImc(bodyFat.toFixed(2));
-            return bodyFat.toFixed(2); // Restituisce il risultato con due cifre decimali
-        } else {
-            const logVitaColloFianchi = Math.log10((field4 + field5) - field6);
-            const logStatura = Math.log10(field6);
-            const bodyFat = 495 / (1.29579 - 0.35004 * logVitaColloFianchi + 0.221 * logStatura - 450)
-            setCountImc(bodyFat.toFixed(2));
-            return bodyFat.toFixed(2);
+    const { gender, setCountImc } = useContext(MyContext);
+    const calculateBodyFat = (values: {
+        vita: string,
+        collo: string,
+        fianchi: string,
+        statura: string
+    }, refs: {
+        vitaRef: React.RefObject<HTMLInputElement>,
+        colloRef: React.RefObject<HTMLInputElement>,
+        fianchiRef: React.RefObject<HTMLInputElement>,
+        staturaRef: React.RefObject<HTMLInputElement>
+    }) => {
+
+        if (values['vita'] === '' ||
+            values['collo'] === '' ||
+            values['fianchi'] === '' ||
+            values['statura'] === ''
+        ) {
+            alert("Compilare i campi");
         }
-    };
+        const
+            vita = parseInt(values['vita']),
+            collo = parseInt(values['collo']),
+            fianchi = parseInt(values['fianchi']),
+            statura = parseInt(values['statura'])
+            ;
+        if (vita && collo && fianchi && statura) {
+            console.log('ok')
+        } else {
+            if (isNaN(vita) && isNaN(collo) && isNaN(fianchi) && isNaN(statura)) {
+                alert('non hai inserito numeri validi');
+                if (refs.vitaRef.current) refs.vitaRef.current.focus();
+            } else {
+                alert('errore non specificato');
+            }
+        }
+        setCountImc(vita+ collo + fianchi + statura);
+    }
     return calculateBodyFat;
 }

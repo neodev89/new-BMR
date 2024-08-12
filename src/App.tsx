@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import classStyle from './Appstyle.module.css';
 import { Stack, Box } from '@mui/material';
 
@@ -19,48 +19,21 @@ function App() {
     [count, setCount] = useState<string>(''),
     [countImc, setCountImc] = useState<string>(''),
     [values, setValues] = useState<{ [key: string]: string }>({}),
-    [myStyle, setMyStyle] = useState<{ [key: string]: string }>({ borderColor: 'inherit' }),
-    [isDisabled, setIsDisabled] = useState<boolean>(false),
-    [disabilita, setDisabilita] = useState<boolean>(false);
+    [myStyle, setMyStyle] = useState<{ [key: string]: string }>({ borderColor: 'inherit' })
+    ;
 
   const sx = useStyle();
 
-  function toggleGender() {
-    setDisabilita(false);
-    if (gender === 'F') {
-      setGender('M');
-    } else {
-      setGender('F')
-
-    }
-  }
-
-  useEffect(() => {
-    function setFields() {
-      if (disabilita === true) {
-        setDisabilita(false)
-        setIsDisabled(true)
-      } else {
-        return null;
-      }
-    }
-    setFields();
-  }, [values, disabilita, setDisabilita, setIsDisabled]);
 
   return (
     // Utilizzo del Context in un Provider
     <MyContext.Provider value={{
-      gender,
-      toggleGender,
+      gender, setGender,
       count,
       setCount,
       sx,
       values,
       setValues,
-      isDisabled,
-      setIsDisabled,
-      disabilita,
-      setDisabilita,
       countImc,
       setCountImc,
       myStyle,
@@ -74,7 +47,7 @@ function App() {
           backgroundPosition: '50% 25%',
           filter: 'drop-shadow(5px 5px 5px black)',
         }}>
-        {sign ? (<Box className={classStyle.central}>
+        {!sign ? (<Box className={classStyle.central}>
           <StackLeft />
           <StackRight />
         </Box>) : (

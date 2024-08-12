@@ -73,14 +73,14 @@ export function useStyleBox() {
             width: '99%',
             padding: 0,
             margin: 2,
-            border: '3px solid red',
+            // border: '3px solid red',
             borderRadius: '32.5rem',
         }),
         corpo: sx({
             justifyContent: 'center',
             height: 'calc(100% / 2)',
             width: '100%',
-            border: '1px dashed green',
+            // border: '1px dashed green',
             // borderRadius: '12% 12%',
             padding: 0,
         }),
@@ -93,7 +93,7 @@ export function useStyleBox() {
             height: '80%',
             width: '100%',
             justifyContent: 'center',
-            border: '3px solid purple',
+            // border: '3px solid purple',
         }),
         fieldBtn: sx({
             display: 'flex',
@@ -102,7 +102,7 @@ export function useStyleBox() {
             height: '20%',
             width: '100%',
             alignItems: 'center',
-            border: '1px dashed green',
+            // border: '1px dashed green',
             margin: 0,
         }),
         myBox: sx({
@@ -113,7 +113,7 @@ export function useStyleBox() {
             alignItems: 'center',
             height: '100%',
             width: '99%',
-            border: '1px solid orange',
+            // border: '1px solid orange',
         })
     }; // Aggiungi gender come dipendenza di useMemo
 }

@@ -11,12 +11,13 @@ interface MyInputProps {
   disabled?: boolean;
   name: string;
   value: string;
+  inputRef?: React.RefObject<HTMLInputElement>;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const MyInputText: FC<MyInputProps> = (
   { disabled = false, name, value, type, inputMode, placeholder, onChange }: MyInputProps) => {
-    const sx = useStyle();
+  const sx = useStyle();
   return (
     <TextField
       type={type}

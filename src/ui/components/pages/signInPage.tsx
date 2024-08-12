@@ -1,7 +1,7 @@
 import { MyInputText } from '../widgets/MyInputText';
 import { MyBox } from '../widgets/MyBox';
 import { Stack, Typography } from '@mui/material';
-import { ChangeEvent, Dispatch, FC, FormEvent, SetStateAction, useContext, useEffect } from 'react';
+import { ChangeEvent, FC, FormEvent, useContext, useEffect } from 'react';
 
 import { MyContext } from '../../../MyContext';
 import { useStyle, useStyleBox } from '../../styles/useSxStyle';
@@ -15,14 +15,14 @@ interface ContextProps {
             [key: string]: string
         }) => void;
     sign: boolean;
-    setSign: Dispatch<SetStateAction<boolean>>;
+    // setSign: Dispatch<SetStateAction<boolean>>;
 }
 
 export const LoginPage: FC = () => {
     const
         sx = useStyle(),
         sx1 = useStyleBox(),
-        { values, setValues, sign, setSign }: ContextProps = useContext(MyContext),
+        { values, setValues, sign }: ContextProps = useContext(MyContext),
         MatchUser = useMatchUser()
         ;
 
