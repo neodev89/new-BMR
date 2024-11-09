@@ -8,10 +8,11 @@ import { useStyle, useStyleBox } from '../../styles/useSxStyle';
 import { MyContext } from '../../../MyContext';
 import { MyInputText } from '../widgets/MyInputText';
 
-import { useHandleBmr, useResetCount } from '../functions/handleBmr';
-import { Gender } from '../../../App';
+import { useHandleBmr, resetCount, typeValues } from '../functions/handleBmr';
+import { Gender } from './Home';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { stateProps } from './Home';
 
 export const LeftContext = MyContext;
 
@@ -20,14 +21,15 @@ interface StackLeftContextProps {
     setGender: (val: string) => void;
     toggleGender: () => void;
     count: string;
-    values: { [key: string]: string };
-    setValues: (func: (prevValue: string[]) => { [key: string]: string }) => void;
+    setCount: (val: string) => void;
+    values: stateProps;
+    setValues: (func: (prevValue: string[]) => stateProps) => void;
 }
 
 const StackLeft: FC = () => {
     const {
         gender, setGender,
-        count,
+        count, setCount,
         values,
     }: StackLeftContextProps = useContext(MyContext),
         [jsonValues, setJsonValues] = useState<Record<string, unknown>[]>([]),
@@ -57,20 +59,14 @@ const StackLeft: FC = () => {
     //     setFields();
     // }, [values, disabilita, setDisabilita, isDisabledLeft, setIsDisabledLeft]);
 
-    interface BmrProps {
-        weight: string | '';
-        height: string | '';
-        age: string | '';
-    }
-
-    const validationRules: Record<keyof BmrProps, any> = {
+    const validationRules: Record<keyof typeValues, any> = {
         weight: yup.string().required(),
         height: yup.string().required(),
         age: yup.string().required(),
     }
 
-    function createValidationSchema(fields: (keyof BmrProps)[]) {
-        let schema: yup.ObjectSchema<Partial<BmrProps>> = yup.object().shape({})
+    function createValidationSchema(fields: (keyof typeValues)[]) {
+        let schema: yup.ObjectSchema<Partial<typeValues>> = yup.object().shape({})
 
         fields.forEach((field) => {
             if (validationRules[field]) {
@@ -98,14 +94,16 @@ const StackLeft: FC = () => {
 
     });
 
-    const resetCount = useResetCount();
+    const handleResetCount = () => {
+        resetCount({ isDisabledBtn, setIsDisabledBtn, setCount, formik });
+    }; 
     const handleBmr = useHandleBmr();
 
     useEffect(() => {
         function checkFields() {
             const fields = [
-                formik.values.weight, 
-                formik.values.height, 
+                formik.values.weight,
+                formik.values.height,
                 formik.values.age
             ];
             if (fields.every(field => field !== '')) {
@@ -169,9 +167,7 @@ const StackLeft: FC = () => {
                             </MySubmit>
                             <MyBtnGenerico sx={sx.cancella}
                                 disabled={isDisabledBtn}
-                                onClick={() => {
-                                    resetCount(formik.values);
-                                }}
+                                onClick={handleResetCount}
                             >
                                 Cancella
                             </MyBtnGenerico>

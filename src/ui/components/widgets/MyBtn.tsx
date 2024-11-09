@@ -19,7 +19,7 @@ export const MyBtn: FC<BtnProps> = ({ sx, children, onClick, ...other }: BtnProp
                 height: '50px',
                 width: '100px',
                 margin: '2px 0',
-                backgroundColor: grey[400],
+                backgroundColor: red[400],
                 ':hover': {
                     backgroundColor: darken(grey[500], 0.5),
                 }

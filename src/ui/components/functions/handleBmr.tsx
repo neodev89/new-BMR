@@ -1,13 +1,14 @@
 /**BMR
     //in Man: BMR=66.4730 + 13.7516 x weight in kg + 5.0033 x
-     height in cm – 6.7550 x age in years.
+    // height in cm – 6.7550 x age in years.
     //In women, BMR=655.0955 + 9.5634 x weight in kg + 1.8496 x
-     height in cm – 4.6756 x age in years. 
+    // height in cm – 4.6756 x age in years. 
 */
 
 import { useContext } from "react";
 import { MyContext } from "../../../MyContext";
 import { LeftContext } from "../pages/StackLeft";
+import { FormikValues } from "formik";
 
 interface objProps {
     value: { [key: string]: string };
@@ -44,8 +45,8 @@ export const useHandleBmr = () => {
 
         console.log(`${values['weight']}, ${values['height']}, ${values['age']}`);
 
-        const weight = parseInt(values['weight']);
-        const height = parseInt(values['height']);
+        const weight = parseFloat(values['weight']);
+        const height = parseFloat(values['height']);
         const age = parseInt(values['age']);
 
         console.log(typeof (weight), typeof (age), typeof (height));
@@ -72,23 +73,28 @@ export const useHandleBmr = () => {
     return bmrCalc;
 };
 
+export type typeValues = {
+    weight: string | '';
+    height: string | '';
+    age: string | '';
+}
 interface ResetProps {
     isDisabledBtn: boolean;
     setIsDisabledBtn: (val: boolean) => void;
+    setCount: (val: string) => void;
+    formik: FormikValues;
 }
 
-export const useResetCount = () => {
-    const { isDisabledBtn, setIsDisabledBtn } = useContext<ResetProps>(LeftContext)
-    const { setCount } = useContext(MyContext);
-    const resetCount = (values: { weight: string, height: string, age: string }) => {
-        values.weight = '';
-        values.height = '';
-        values.age = '';
-        setIsDisabledBtn(!isDisabledBtn);
-        setCount('');
-    };
-    return resetCount;
+export const resetCount = ({ isDisabledBtn, setIsDisabledBtn, setCount, formik }: ResetProps) => {
+    formik.setValues({
+        weight: '',
+        height: '',
+        age: '',
+    })
+    setIsDisabledBtn(!isDisabledBtn);
+    setCount('');
 };
+
 
 type Setter = (value: string) => void;
 
@@ -136,7 +142,7 @@ export const useHandleIMC = () => {
                 alert('errore non specificato');
             }
         }
-        setCountImc(vita+ collo + fianchi + statura);
+        setCountImc(vita + collo + fianchi + statura);
     }
     return calculateBodyFat;
 }

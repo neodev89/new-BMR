@@ -2,7 +2,7 @@ import { TextField } from "@mui/material";
 import { FC } from "react";
 import { useStyle } from "../../styles/useSxStyle";
 
-type InputMode = "search" | "text" | "email" | "tel" | "url" | "none" | "numeric" | "decimal" | undefined;
+export type InputMode = "search" | "text" | "email" | "tel" | "url" | "none" | "numeric" | "decimal" | undefined;
 
 interface MyInputProps {
   type?: string;

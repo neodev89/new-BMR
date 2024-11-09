@@ -5,7 +5,7 @@ import { useStyle, useStyleBox } from '../../styles/useSxStyle';
 import { MyBox } from '../widgets/MyBox';
 import { useHandleIMC, useResetFields } from '../functions/handleBmr';
 import { MyBtnGenerico } from '../widgets/MyBtn';
-import { Gender } from '../../../App';
+import { Gender } from './Home';
 import { MyInputText } from '../widgets/MyInputText';
 import { MySubmit } from '../widgets/MySubmit';
 import * as yup from 'yup';

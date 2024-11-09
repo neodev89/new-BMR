@@ -24,5 +24,17 @@
     justify-content: space-evenly;
     height: 95%;
     width: 75%;
-    /* border: 2px dotted blue; */
+    border: 2px dotted blue;
+}
+
+@media only screen and (min-width: 700px) and (max-width: 900px) {
+    .central {
+        position: flex;
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        height: 95%;
+        width: 95%;
+        border: 2px dashed red;
+    }
 }
