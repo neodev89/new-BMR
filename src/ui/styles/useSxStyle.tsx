@@ -1,11 +1,15 @@
 import { blue, pink, red, yellow } from "@mui/material/colors";
 import sx from "../tipes/sxTipe"; // Assuming this provides styling functionality
 import { MyContext } from "../../MyContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { darken } from "@mui/material";
 
 export function useStyle() {
-
+    const { gender } = useContext(MyContext);
+    const color = gender === 'M' ? `${blue[300]}` : `${pink[200]}`;
+    useEffect(() => {
+        console.log(gender, color);
+    }, [gender, color]);
     return {
         table: sx({
             position: 'relative',
@@ -15,7 +19,7 @@ export function useStyle() {
             height: '100%',
             width: '20rem',
             borderRadius: '12% 12%',
-            border: `6px double ${blue[300]}`,
+            border: `6px double ${color}`,
             backgroundColor: 'rgba(224, 240, 255, 0.7)',
         }),
         btn: sx({

@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useContext, useEffect, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { MyBtn, MyBtnGenerico } from '../widgets/MyBtn';
 import { MyBox } from '../widgets/MyBox';
@@ -13,6 +13,7 @@ import { Gender } from './Home';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { stateProps } from './Home';
+import { useSaveStateBmr } from '../../general-state/stateBmr';
 
 export const LeftContext = MyContext;
 
@@ -36,8 +37,10 @@ const StackLeft: FC = () => {
         [isDisabledLeft, setIsDisabledLeft] = useState<boolean>(false),
         [isDisabledBtn, setIsDisabledBtn] = useState<boolean>(true),
         [disabilita, setDisabilita] = useState<boolean>(false);
+
     const sx = useStyle();
     const sx1 = useStyleBox();
+    const { state, updateState, deleteState } = useSaveStateBmr();
 
     function toggleGender() {
         if (gender === 'F') {
@@ -47,17 +50,17 @@ const StackLeft: FC = () => {
         }
     }
 
-    // useEffect(() => {
-    //     function setFields() {
-    //         if (disabilita === true) {
-    //             setDisabilita(false)
-    //             setIsDisabledLeft(true)
-    //         } else {
-    //             return null;
-    //         }
-    //     }
-    //     setFields();
-    // }, [values, disabilita, setDisabilita, isDisabledLeft, setIsDisabledLeft]);
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+       const { name, value } = e.target;
+       updateState({
+        ...state,
+        [name]: value,
+       });
+       formik.setValues({
+        ...formik.values,
+        [name]: value,
+       });
+    }
 
     const validationRules: Record<keyof typeValues, any> = {
         weight: yup.string().required(),
@@ -83,9 +86,9 @@ const StackLeft: FC = () => {
 
     const formik = useFormik({
         initialValues: {
-            weight: '',
-            height: '',
-            age: '',
+            weight: state.weight,
+            height: state.height,
+            age: state.age,
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -96,6 +99,7 @@ const StackLeft: FC = () => {
 
     const handleResetCount = () => {
         resetCount({ isDisabledBtn, setIsDisabledBtn, setCount, formik });
+        deleteState();
     }; 
     const handleBmr = useHandleBmr();
 
@@ -115,7 +119,8 @@ const StackLeft: FC = () => {
             }
         }
         checkFields();
-    }, [formik.values, setIsDisabledLeft]);
+        console.log(state.age, state.height, state.weight)
+    }, [formik.values, setIsDisabledLeft, state]);
 
 
     return (
@@ -137,7 +142,7 @@ const StackLeft: FC = () => {
                                 disabled={disabilita}
                                 name='weight'
                                 inputMode='numeric'
-                                onChange={formik.handleChange}
+                                onChange={(e) => handleChange(e)}
                                 placeholder='weight in kg'
                                 value={formik.values.weight}
                             />
@@ -145,7 +150,7 @@ const StackLeft: FC = () => {
                                 disabled={disabilita}
                                 name='height'
                                 inputMode='numeric'
-                                onChange={formik.handleChange}
+                                onChange={(e) => handleChange(e)}
                                 placeholder='height in cm'
                                 value={formik.values.height}
                             />
@@ -153,7 +158,7 @@ const StackLeft: FC = () => {
                                 disabled={disabilita}
                                 name='age'
                                 inputMode='numeric'
-                                onChange={formik.handleChange}
+                                onChange={(e) => handleChange(e)}
                                 placeholder='age in year'
                                 value={formik.values.age}
                             />

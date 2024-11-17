@@ -10,6 +10,7 @@ import { MyInputText } from '../widgets/MyInputText';
 import { MySubmit } from '../widgets/MySubmit';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
+import { useSaveStateBmr } from '../../general-state/stateBmr';
 
 interface StackRightContextProps {
     gender: Gender;
@@ -34,6 +35,7 @@ const StackRight: FC = () => {
 
     const sx = useStyle();
     const sx1 = useStyleBox();
+    const { state } = useSaveStateBmr();
 
     const refs = {
         vitaRef: useRef<HTMLInputElement>(null),
@@ -77,12 +79,23 @@ const StackRight: FC = () => {
             vita: '',
             collo: '',
             fianchi: '',
-            statura: '',
+            statura: state.height,
         }, validationSchema: validationSchema,
         onSubmit: (values) => {
             setJsonValues((prevVal) => [...prevVal, values])
         }
     });
+
+    useEffect(() => {
+        function controlState() {
+            if (state.height) {
+                return state.height;
+            } else {
+                return formik.values.statura;
+            }
+        }
+        controlState();
+    }, [state.height, formik.values.statura]);
 
     const handleImc = useHandleIMC();
 
@@ -91,8 +104,8 @@ const StackRight: FC = () => {
             const fields = [
                 formik.values.collo,
                 formik.values.fianchi,
-                formik.values.statura,
-                formik.values.vita
+                formik.values.vita,
+                formik.values.statura
             ];
             if (fields.every(field => field !== '')) {
                 setIsDisabled(false);
